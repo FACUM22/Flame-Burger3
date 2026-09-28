@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Flame Burger | Categorías
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+    <style>
+
+        .category-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .category-card {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 15px;
+            padding: 18px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .category-icon {
+            width: 45px;
+            height: 45px;
+            background: #fff1e8;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .category-name {
+            font-size: 17px;
+            font-weight: 800;
+            margin-top: 12px;
+        }
+
+        .category-count {
+            color: #888;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .category-status {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 5px 8px;
+            border-radius: 6px;
+        }
+
+        .category-active {
+            background: #ecfdf3;
+            color: #15803d;
+        }
+
+        .category-inactive {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .category-actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 17px;
+        }
+
+        .category-actions button {
+            flex: 1;
+            border: none;
+            border-radius: 8px;
+            padding: 9px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .category-edit {
+            background: #f1f1f1;
+        }
+
+        .category-toggle {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .category-delete {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .category-empty {
+            text-align: center;
+            padding: 60px;
+            color: #888;
+        }
+
+        @media (max-width: 950px) {
+
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🍔
+            </div>
+
+            <div>
+
+                <h1>
+                    FLAME
+                </h1>
+
+                <span>
+                    BURGER
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+            <a
+                href="dashboard.html"
+                class="menu-item"
+            >
+                <span>📊</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="pedidos.html"
+                class="menu-item"
+            >
+                <span>🛒</span>
+                Pedidos
+            </a>
+
+
+            <a
+                href="productos.html"
+                class="menu-item"
+            >
+                <span>🍔</span>
+                Productos
+            </a>
+
+
+            <a
+                href="categorias.html"
+                class="menu-item active"
+            >
+                <span>📁</span>
+                Categorías
+            </a>
+
+
+            <a
+                href="ventas.html"
+                class="menu-item"
+            >
+                <span>💰</span>
+                Ventas
+            </a>
+
+
+            <a
+                href="configuracion.html"
+                class="menu-item"
+            >
+                <span>⚙️</span>
+                Configuración
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="store-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        Local abierto
+                    </strong>
+
+                    <small>
+                        Recibiendo pedidos
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <header class="topbar">
+
+            <button
+                class="mobile-menu"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <h2>
+                    Categorías
+                </h2>
+
+                <p>
+                    Organizá el menú de Flame Burger
+                </p>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <div class="user">
+
+                    <div class="avatar">
+                        FB
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Flame Burger
+                        </strong>
+
+                        <small>
+                            Administrador
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="content">
+
+
+            <div class="welcome">
+
+                <div>
+
+                    <span class="eyebrow">
+                        MENÚ
+                    </span>
+
+                    <h2>
+                        Categorías 📁
+                    </h2>
+
+                    <p>
+                        Organizá los productos de tu menú.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    id="nuevaCategoria"
+                    type="button"
+                >
+                    ＋ Nueva categoría
+                </button>
+
+            </div>
+
+
+
+            <div class="panel">
+
+
+                <div class="category-toolbar">
+
+                    <div>
+
+                        <h3>
+                            Categorías del menú
+                        </h3>
+
+                        <p>
+                            Administrá las categorías disponibles.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="categorias"
+                    class="categories-grid"
+                ></div>
+
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- MODAL -->
+
+<div
+    id="modalCategoria"
+    class="modal"
+>
+
+
+    <div class="modal-overlay"></div>
+
+
+    <div class="modal-box">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    MENÚ
+                </span>
+
+                <h2 id="modalTitulo">
+                    Nueva categoría
+                </h2>
+
+            </div>
+
+
+            <button
+                id="cerrarModal"
+                class="close-btn"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="categoriaForm">
+
+
+            <div class="form-group">
+
+                <label>
+                    Nombre de la categoría
+                </label>
+
+                <input
+                    type="text"
+                    id="nombreCategoria"
+                    placeholder="Ej: Combos"
+                    required
+                >
+
+            </div>
+
+
+            <div
+                id="mensajeCategoria"
+                class="form-message"
+            ></div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    id="cancelarCategoria"
+                    class="secondary-btn"
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Guardar categoría
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="js/common.js"></script>
+
+<script
+    src="js/categorias.js"
+></script>
+
+</body>
+
+</html>

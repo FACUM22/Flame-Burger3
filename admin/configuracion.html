@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Flame Burger | Configuración
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🍔
+            </div>
+
+            <div>
+
+                <h1>
+                    FLAME
+                </h1>
+
+                <span>
+                    BURGER
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+
+            <a
+                href="dashboard.html"
+                class="menu-item"
+            >
+                <span>📊</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="pedidos.html"
+                class="menu-item"
+            >
+                <span>🛒</span>
+                Pedidos
+            </a>
+
+
+            <a
+                href="productos.html"
+                class="menu-item"
+            >
+                <span>🍔</span>
+                Productos
+            </a>
+
+
+            <a
+                href="categorias.html"
+                class="menu-item"
+            >
+                <span>📁</span>
+                Categorías
+            </a>
+
+
+            <a
+                href="ventas.html"
+                class="menu-item"
+            >
+                <span>💰</span>
+                Ventas
+            </a>
+
+
+            <a
+                href="configuracion.html"
+                class="menu-item active"
+            >
+                <span>⚙️</span>
+                Configuración
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="store-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        Local abierto
+                    </strong>
+
+                    <small>
+                        Recibiendo pedidos
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <button
+                class="mobile-menu"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <h2>
+                    Configuración
+                </h2>
+
+                <p>
+                    Estado del local y reglas de envío
+                </p>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <div class="user">
+
+                    <div class="avatar">
+                        FB
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Flame Burger
+                        </strong>
+
+                        <small>
+                            Administrador
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+
+            <div class="welcome">
+
+                <div>
+
+                    <span class="eyebrow">
+                        CONFIGURACIÓN
+                    </span>
+
+                    <h2>
+                        Local y delivery ⚙️
+                    </h2>
+
+                    <p>
+                        Desde acá controlás si el local recibe
+                        pedidos, y las reglas de precio y
+                        distancia máxima para el delivery.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===============================
+                 ESTADO DEL LOCAL
+            ================================ -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h3>
+                            Estado del local
+                        </h3>
+
+                        <p>
+                            Si lo marcás como cerrado, la web
+                            deja de aceptar pedidos nuevos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="config-estado-box">
+
+                    <div class="config-estado-info">
+
+                        <span
+                            id="configEstadoDot"
+                            class="status-dot"
+                        ></span>
+
+                        <div>
+
+                            <strong id="configEstadoTexto">
+                                Local abierto
+                            </strong>
+
+                            <small id="configEstadoSub">
+                                Recibiendo pedidos
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        id="btnAlternarEstado"
+                        type="button"
+                        class="primary-btn"
+                    >
+                        Cerrar local
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===============================
+                 REGLAS DE ENVÍO
+            ================================ -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h3>
+                            Reglas de envío por distancia
+                        </h3>
+
+                        <p>
+                            La distancia se calcula en línea
+                            recta desde el local hasta la
+                            dirección del cliente.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    id="formEnvio"
+                    class="config-form"
+                >
+
+                    <div class="form-group">
+
+                        <label>
+                            Envío gratis hasta (km)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="envioGratisHastaKm"
+                            step="0.1"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Costo de envío fijo ($)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="envioCosto"
+                            step="1"
+                            min="0"
+                            required
+                        >
+
+                        <small>
+                            Se cobra este monto fijo cuando la
+                            distancia supera el km de envío
+                            gratis.
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Distancia máxima de delivery (km)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="envioMaximoKm"
+                            step="0.1"
+                            min="0"
+                            required
+                        >
+
+                        <small>
+                            Los pedidos más lejos que esto no
+                            se pueden hacer por delivery.
+                        </small>
+
+                    </div>
+
+
+                    <div
+                        id="mensajeEnvio"
+                        class="form-message"
+                    ></div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Guardar reglas de envío
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- ===============================
+                 UBICACIÓN DEL LOCAL
+            ================================ -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h3>
+                            Ubicación del local
+                        </h3>
+
+                        <p>
+                            Punto desde el que se mide la
+                            distancia de cada pedido.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="config-ubicacion-info">
+
+                    <p>
+                        <strong>Dirección:</strong>
+                        Av. Gral. San Martín 5306, Montevideo
+                    </p>
+
+                    <p>
+                        <strong>Latitud:</strong>
+                        <span id="ubicacionLat">—</span>
+                    </p>
+
+                    <p>
+                        <strong>Longitud:</strong>
+                        <span id="ubicacionLng">—</span>
+                    </p>
+
+                    <small>
+                        Si el local se muda, avisale a quien
+                        mantiene la web para actualizar estas
+                        coordenadas.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/common.js"></script>
+
+<script src="js/configuracion.js"></script>
+
+</body>
+
+</html>

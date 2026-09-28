@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Flame Burger - Finalizar pedido
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/checkout.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOCAL CERRADO (overlay)
+===================================================== -->
+
+<div
+    id="localCerradoOverlay"
+    class="local-cerrado-overlay"
+>
+
+    <div class="local-cerrado-caja">
+
+        <span class="local-cerrado-icono">
+            🔒
+        </span>
+
+        <h2>
+            Estamos cerrados
+        </h2>
+
+        <p>
+            En este momento no estamos recibiendo pedidos.
+            Volvé a intentarlo más tarde.
+        </p>
+
+        <a
+            href="/"
+            class="local-cerrado-volver"
+        >
+            ← Volver al menú
+        </a>
+
+    </div>
+
+</div>
+
+
+<header class="checkout-header">
+
+    <a
+        href="/"
+        class="volver"
+    >
+        ← Volver al menú
+    </a>
+
+
+    <div class="checkout-logo">
+        🔥 FLAME BURGER
+    </div>
+
+</header>
+
+
+
+<main class="checkout-container">
+
+
+    <section class="checkout-form">
+
+
+        <div class="titulo">
+
+            <span>
+                FLAME BURGER
+            </span>
+
+            <h1>
+                Finalizar pedido
+            </h1>
+
+            <p>
+                Completá tus datos para realizar el pedido.
+            </p>
+
+        </div>
+
+
+
+        <!-- DATOS DEL CLIENTE -->
+
+        <div class="form-card">
+
+            <h2>
+                👤 Tus datos
+            </h2>
+
+
+            <div class="campo">
+
+                <label for="nombre">
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    id="nombre"
+                    placeholder="Tu nombre"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="telefono">
+                    Teléfono
+                </label>
+
+            <input
+    type="tel"
+    id="telefono"
+    name="telefono"
+    inputmode="numeric"
+    pattern="[0-9]*"
+    maxlength="9"
+    placeholder="099123456"
+    required
+>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="direccion">
+                    Dirección
+                </label>
+
+                <input
+                    type="text"
+                    id="direccion"
+                    placeholder="Calle y número"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="comentarios">
+                    Comentarios
+                </label>
+
+                <textarea
+                    id="comentarios"
+                    placeholder="Ej: timbre rojo, apartamento 2..."
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ENTREGA -->
+
+        <div class="form-card">
+
+            <h2>
+                🚚 Forma de entrega
+            </h2>
+
+
+            <div class="opciones">
+
+
+                <label class="opcion">
+
+                    <input
+                        type="radio"
+                        name="entrega"
+                        value="delivery"
+                        checked
+                    >
+
+                    <div>
+
+                        <strong>
+                            🛵 Delivery
+                        </strong>
+
+                        <small>
+                            Recibí tu pedido en tu domicilio.
+                        </small>
+
+                    </div>
+
+                </label>
+
+
+
+                <label class="opcion">
+
+                    <input
+                        type="radio"
+                        name="entrega"
+                        value="retiro"
+                    >
+
+                    <div>
+
+                        <strong>
+                            🏪 Retiro en el local
+                        </strong>
+
+                        <small>
+                            Pasás a buscar tu pedido.
+                        </small>
+
+                    </div>
+
+                </label>
+
+
+            </div>
+
+
+            <!-- UBICACIÓN DE ENTREGA (solo delivery) -->
+
+            <div
+                id="ubicacionEntrega"
+                class="ubicacion-entrega"
+            >
+
+                <p class="ubicacion-ayuda">
+                    Marcá tu domicilio en el mapa o usá tu
+                    ubicación para calcular el envío.
+                </p>
+
+                <button
+                    type="button"
+                    id="btnUsarGPS"
+                    class="btn-gps"
+                >
+                    📍 Usar mi ubicación (GPS)
+                </button>
+
+                <div
+                    id="mapaEntrega"
+                    class="mapa-entrega"
+                ></div>
+
+                <p
+                    id="estadoUbicacion"
+                    class="estado-ubicacion"
+                >
+                    Todavía no elegiste tu ubicación.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PAGO -->
+
+        <div class="form-card">
+
+            <h2>
+                💳 Forma de pago
+            </h2>
+
+
+            <div class="opciones">
+
+
+                <label class="opcion">
+
+                    <input
+                        type="radio"
+                        name="pago"
+                        value="efectivo"
+                        checked
+                    >
+
+                    <div>
+
+                        <strong>
+                            💵 Efectivo
+                        </strong>
+
+                        <small>
+                            Pagás al recibir el pedido.
+                        </small>
+
+                    </div>
+
+                </label>
+
+
+
+                <label class="opcion">
+
+                  <input
+    type="radio"
+    name="pago"
+    value="mercado_pago"
+>
+
+                    <div>
+
+                        <strong>
+                            💳 Mercado Pago
+                        </strong>
+
+                        <small>
+                            Pagá online de forma segura.
+                        </small>
+
+                    </div>
+
+                </label>
+
+
+
+                <label class="opcion">
+
+                  <input
+    type="radio"
+    name="pago"
+    value="tarjeta_pos"
+>
+
+                    <div>
+
+                        <strong>
+                            💳 Tarjeta (POS)
+                        </strong>
+
+                        <small>
+                            Pagás con tarjeta al recibir el pedido.
+                        </small>
+
+                    </div>
+
+                </label>
+
+
+            </div>
+
+        </div>
+
+
+
+        <button
+            id="confirmarPedido"
+            class="confirmar"
+            type="button"
+        >
+
+            Confirmar pedido
+
+        </button>
+
+
+        <p
+            id="mensaje"
+            class="mensaje"
+        ></p>
+
+
+    </section>
+
+
+
+    <!-- RESUMEN -->
+
+    <aside class="resumen">
+
+        <div class="resumen-card">
+
+            <h2>
+                🛒 Tu pedido
+            </h2>
+
+
+            <div
+                id="resumenProductos"
+                class="resumen-productos"
+            ></div>
+
+
+            <div class="linea"></div>
+
+
+            <div class="resumen-total">
+
+                <span>
+                    Total
+                </span>
+
+
+                <strong
+                    id="total"
+                >
+                    $0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+</main>
+
+
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+
+<script
+    src="js/checkout.js"
+></script>
+
+
+</body>
+
+</html>

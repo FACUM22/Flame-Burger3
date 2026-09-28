@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Flame Burger | Productos
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🍔
+            </div>
+
+
+            <div>
+
+                <h1>
+                    FLAME
+                </h1>
+
+                <span>
+                    BURGER
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="dashboard.html"
+                class="menu-item"
+            >
+
+                <span>
+                    📊
+                </span>
+
+                Dashboard
+
+            </a>
+
+
+            <!-- PEDIDOS -->
+
+            <a
+                href="pedidos.html"
+                class="menu-item"
+            >
+
+                <span>
+                    🛒
+                </span>
+
+                Pedidos
+
+            </a>
+
+
+            <!-- PRODUCTOS -->
+
+            <a
+                href="productos.html"
+                class="menu-item active"
+            >
+
+                <span>
+                    🍔
+                </span>
+
+                Productos
+
+            </a>
+
+
+            <!-- CATEGORÍAS -->
+
+            <a
+                href="categorias.html"
+                class="menu-item"
+            >
+
+                <span>
+                    📁
+                </span>
+
+                Categorías
+
+            </a>
+
+
+            <!-- VENTAS -->
+
+            <a
+                href="ventas.html"
+                class="menu-item"
+            >
+
+                <span>
+                    💰
+                </span>
+
+                Ventas
+
+            </a>
+
+
+            <!-- CONFIGURACIÓN -->
+
+            <a
+                href="configuracion.html"
+                class="menu-item"
+            >
+
+                <span>
+                    ⚙️
+                </span>
+
+                Configuración
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- ESTADO DEL LOCAL -->
+
+        <div class="sidebar-bottom">
+
+
+            <div class="store-status">
+
+                <span class="status-dot"></span>
+
+
+                <div>
+
+                    <strong>
+                        Local abierto
+                    </strong>
+
+
+                    <small>
+                        Recibiendo pedidos
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="main">
+
+
+        <!-- =====================================
+             TOPBAR
+        ====================================== -->
+
+        <header class="topbar">
+
+
+            <button
+                class="mobile-menu"
+                type="button"
+            >
+
+                ☰
+
+            </button>
+
+
+            <div class="topbar-title">
+
+
+                <h2>
+                    Productos
+                </h2>
+
+
+                <p>
+                    Administrá el menú de Flame Burger
+                </p>
+
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+
+                <button
+                    class="notification"
+                    type="button"
+                >
+
+                    🔔
+
+                    <span>
+                        3
+                    </span>
+
+                </button>
+
+
+                <div class="user">
+
+
+                    <div class="avatar">
+                        FB
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Flame Burger
+                        </strong>
+
+
+                        <small>
+                            Administrador
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =====================================
+             CONTENIDO
+        ====================================== -->
+
+        <section class="content">
+
+
+            <!-- PRESENTACIÓN -->
+
+            <div class="welcome">
+
+
+                <div>
+
+
+                    <span class="eyebrow">
+                        ADMINISTRACIÓN
+                    </span>
+
+
+                    <h2>
+                        Gestioná tus productos 🍔
+                    </h2>
+
+
+                    <p>
+                        Agregá, editá y controlá los productos
+                        que aparecen en el menú.
+                    </p>
+
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    id="abrirFormulario"
+                    type="button"
+                >
+
+                    <span>
+                        ＋
+                    </span>
+
+                    Nuevo producto
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 ESTADÍSTICAS
+            ================================== -->
+
+            <div class="stats-grid">
+
+
+                <!-- TOTAL -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon orange">
+                        🍔
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Total productos
+                        </span>
+
+
+                        <strong
+                            id="totalProductos"
+                        >
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- DISPONIBLES -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon green">
+                        ✅
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Disponibles
+                        </span>
+
+
+                        <strong
+                            id="productosDisponibles"
+                        >
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- AGOTADOS -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon red">
+                        ⚠️
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            No disponibles
+                        </span>
+
+
+                        <strong
+                            id="productosAgotados"
+                        >
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- CATEGORÍAS -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon blue">
+                        📁
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Categorías
+                        </span>
+
+
+                        <strong
+                            id="totalCategorias"
+                        >
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 PANEL PRODUCTOS
+            ================================== -->
+
+            <div class="panel">
+
+
+                <div class="panel-header">
+
+
+                    <div>
+
+                        <h3>
+                            Todos los productos
+                        </h3>
+
+
+                        <p>
+                            Controlá los productos
+                            publicados en la tienda.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     BUSCADOR Y FILTROS
+                ================================== -->
+
+                <div class="toolbar">
+
+
+                    <!-- BUSCADOR -->
+
+                    <div class="search">
+
+
+                        <span>
+                            🔎
+                        </span>
+
+
+                        <input
+                            type="text"
+                            id="buscarProducto"
+                            placeholder="Buscar producto..."
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- FILTRO ESTADO -->
+
+                    <select
+                        id="filtroEstado"
+                    >
+
+                        <option value="todos">
+                            Todos
+                        </option>
+
+
+                        <option value="disponibles">
+                            Disponibles
+                        </option>
+
+
+                        <option value="agotados">
+                            No disponibles
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     LISTA PRODUCTOS
+                ================================== -->
+
+                <div
+                    id="listaProductos"
+                    class="products-grid"
+                ></div>
+
+
+
+                <!-- =================================
+                     SIN PRODUCTOS
+                ================================== -->
+
+                <div
+                    id="emptyState"
+                    class="empty-state"
+                >
+
+
+                    <div class="empty-icon">
+                        🍔
+                    </div>
+
+
+                    <h3>
+                        No hay productos
+                    </h3>
+
+
+                    <p>
+                        Todavía no agregaste productos
+                        al menú.
+                    </p>
+
+
+                    <button
+                        class="primary-btn"
+                        id="abrirFormularioEmpty"
+                        type="button"
+                    >
+
+                        Agregar producto
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- ===========================================
+     MODAL PRODUCTO
+=========================================== -->
+
+<div
+    id="modalProducto"
+    class="modal"
+>
+
+
+    <!-- FONDO -->
+
+    <div class="modal-overlay"></div>
+
+
+    <!-- CAJA -->
+
+    <div class="modal-box">
+
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+
+            <div>
+
+
+                <span class="eyebrow">
+                    MENÚ
+                </span>
+
+
+                <h2>
+                    Nuevo producto
+                </h2>
+
+
+            </div>
+
+
+            <button
+                id="cerrarModal"
+                class="close-btn"
+                type="button"
+            >
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             FORMULARIO
+        ====================================== -->
+
+        <form
+            id="productoForm"
+        >
+
+
+            <div class="form-grid">
+
+
+                <!-- =================================
+                     NOMBRE
+                ================================== -->
+
+                <div
+                    class="form-group full"
+                >
+
+
+                    <label
+                        for="nombre"
+                    >
+                        Nombre del producto
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        placeholder="Ej: Flame Doble"
+                        required
+                    >
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     PRECIO
+                ================================== -->
+
+                <div
+                    class="form-group"
+                >
+
+
+                    <label
+                        for="precio"
+                    >
+                        Precio
+                    </label>
+
+
+                    <div class="price-input">
+
+
+                        <span>
+                            $
+                        </span>
+
+
+                        <input
+                            type="number"
+                            id="precio"
+                            placeholder="590"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     CATEGORÍA DINÁMICA
+                ================================== -->
+
+                <div
+                    class="form-group"
+                >
+
+
+                    <label
+                        for="categoria"
+                    >
+                        Categoría
+                    </label>
+
+
+                    <select
+                        id="categoria"
+                        required
+                    >
+
+                        <option
+                            value=""
+                        >
+                            Cargando categorías...
+                        </option>
+
+                    </select>
+
+
+                    <small>
+                        Las categorías se cargan
+                        automáticamente desde el panel.
+                    </small>
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     DESCRIPCIÓN
+                ================================== -->
+
+                <div
+                    class="form-group full"
+                >
+
+
+                    <label
+                        for="descripcion"
+                    >
+                        Descripción
+                    </label>
+
+
+                    <textarea
+                        id="descripcion"
+                        placeholder="Describí el producto..."
+                    ></textarea>
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     IMAGEN
+                ================================== -->
+
+                <div
+                    class="form-group full"
+                >
+
+
+                    <label
+                        for="imagen"
+                    >
+                        Imagen del producto
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="imagen"
+                        accept="image/png, image/jpeg, image/webp"
+                    >
+
+
+                    <small>
+                        JPG, PNG o WebP. Máximo 5 MB.
+                    </small>
+
+
+
+                    <!-- VISTA PREVIA -->
+
+                    <div
+                        id="vistaPrevia"
+                        class="image-preview"
+                    >
+
+
+                        <span>
+                            🍔
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================
+                 MENSAJE
+            ====================================== -->
+
+            <div
+                id="mensaje"
+                class="form-message"
+            ></div>
+
+
+
+            <!-- =====================================
+                 FOOTER
+            ====================================== -->
+
+            <div class="modal-footer">
+
+
+                <button
+                    type="button"
+                    id="cancelarModal"
+                    class="secondary-btn"
+                >
+
+                    Cancelar
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+
+                    Guardar producto
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ===========================================
+     JAVASCRIPT
+=========================================== -->
+
+<script src="js/common.js"></script>
+
+<script
+    src="js/productos.js"
+></script>
+
+
+</body>
+
+</html>

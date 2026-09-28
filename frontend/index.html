@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="description"
+    content="Flame Burger - Hamburguesas a la llama en Montevideo"
+>
+
+<title>Flame Burger | Hamburguesas a la llama</title>
+
+<link
+    rel="stylesheet"
+    href="css/style.css"
+>
+
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+<a
+    href="/"
+    class="logo"
+>
+
+    <img
+        src="../img/fondo.jpeg"
+        alt="Flame Burger"
+        class="logo-image"
+    >
+
+</a>
+
+
+<div class="header-right">
+
+
+    <div class="estado-local">
+
+        <span class="estado-punto"></span>
+
+        <span>
+            Abierto
+        </span>
+
+    </div>
+
+
+    <button
+        id="abrirCarrito"
+        class="cart-button"
+        type="button"
+        aria-label="Abrir carrito"
+    >
+
+        <span class="cart-icon">
+            🛒
+        </span>
+
+        <span class="cart-text">
+            Carrito
+        </span>
+
+        <span id="cantidadCarrito">
+            0
+        </span>
+
+    </button>
+
+
+</div>
+
+
+</header>
+
+<!-- =====================================================
+     CONTENIDO PRINCIPAL
+===================================================== -->
+
+<main>
+
+
+<!-- =================================================
+     HERO
+================================================== -->
+
+<section class="hero">
+
+
+    <div class="hero-overlay"></div>
+
+
+    <div class="hero-content">
+
+
+        <span class="hero-tag">
+            HAMBURGUESAS A LA LLAMA
+        </span>
+
+
+        <h1>
+
+            Encendemos
+            <br>
+
+            <span>
+                tu antojo.
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Hamburguesas hechas a la llama,
+            <br class="hero-break">
+
+            con sabor que no se olvida.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+
+            <a
+                href="#menu"
+                class="hero-button"
+            >
+
+                <span>
+                    Pedir ahora
+                </span>
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+            <a
+                href="#info"
+                class="hero-link"
+            >
+
+                Conocé Flame Burger
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =================================================
+     MENÚ
+================================================== -->
+
+<section
+    id="menu"
+    class="menu-section"
+>
+
+
+    <div class="menu-header">
+
+
+        <div class="section-title">
+
+
+            <span>
+                NUESTRO MENÚ
+            </span>
+
+
+            <h2>
+                Elegí tu favorita.
+            </h2>
+
+
+            <p>
+                Todo preparado al momento.
+            </p>
+
+
+        </div>
+
+
+        <div class="menu-decoration">
+            🔥
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         CATEGORÍAS
+    ================================================== -->
+
+    <div
+        id="categoriasMenu"
+        class="categorias-menu"
+    >
+
+        <button
+            class="categoria-btn active"
+            data-categoria="todas"
+            type="button"
+        >
+            Todos
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         PRODUCTOS
+    ================================================== -->
+
+    <div
+        id="productos"
+        class="productos-grid"
+    >
+
+        <div class="loading-productos">
+
+            <div class="loading-icon">
+                🔥
+            </div>
+
+            <p>
+                Cargando menú...
+            </p>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =================================================
+     INFORMACIÓN
+================================================== -->
+
+<section
+    id="info"
+    class="info-section"
+>
+
+
+    <div class="info-container">
+
+
+        <div class="info-content">
+
+
+            <span class="info-label">
+                FLAME BURGER
+            </span>
+
+
+            <h2>
+
+                El fuego es
+                <br>
+
+                nuestro ingrediente.
+
+            </h2>
+
+
+            <p>
+
+                Burgers hechas con ingredientes seleccionados
+                y cocinadas a la llama para conseguir ese
+                sabor único que nos caracteriza.
+
+            </p>
+
+
+            <div class="info-details">
+
+
+                <div class="info-item">
+
+                    <span class="info-item-icon">
+                        📍
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Montevideo
+                        </strong>
+
+                        <span>
+                            Uruguay
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span class="info-item-icon">
+                        🔥
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Hecho a la llama
+                        </strong>
+
+                        <span>
+                            Siempre al momento
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="info-fire">
+
+            <span>
+                🔥
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+<!-- =====================================================
+     CARRITO
+===================================================== -->
+
+<div
+    id="carritoOverlay"
+    class="carrito-overlay"
+>
+
+
+<div class="carrito">
+
+
+    <!-- HEADER DEL CARRITO -->
+
+    <div class="carrito-header">
+
+
+        <div>
+
+            <span class="carrito-label">
+                TU PEDIDO
+            </span>
+
+
+            <h2>
+                Carrito
+            </h2>
+
+        </div>
+
+
+        <button
+            id="cerrarCarrito"
+            type="button"
+            aria-label="Cerrar carrito"
+        >
+
+            ×
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- PRODUCTOS DEL CARRITO -->
+
+    <div
+        id="itemsCarrito"
+        class="items-carrito"
+    ></div>
+
+
+
+    <!-- TOTAL -->
+
+    <div class="carrito-footer">
+
+
+        <div class="total-carrito">
+
+
+            <div>
+
+                <span>
+                    Total del pedido
+                </span>
+
+                <small>
+                    Impuestos incluidos
+                </small>
+
+            </div>
+
+
+            <strong id="totalCarrito">
+                $0
+            </strong>
+
+
+        </div>
+
+
+        <button
+            id="irCheckout"
+            class="checkout-button"
+            type="button"
+        >
+
+            <span>
+                Continuar pedido
+            </span>
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-logo">
+
+        <img
+            src="../img/fondo.jpeg"
+            alt="Flame Burger"
+            class="footer-logo-image"
+        >
+
+    </div>
+
+
+    <p class="footer-description">
+        Hamburguesas a la llama · Montevideo
+    </p>
+
+
+    <!-- REDES SOCIALES -->
+
+    <div class="footer-social">
+
+        <!-- INSTAGRAM -->
+
+        <a
+            href="https://www.instagram.com/flame_burguersss/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-button instagram"
+        >
+
+            <span class="social-icon">
+                📸
+            </span>
+
+            <span>
+                Instagram
+            </span>
+
+        </a>
+
+
+        <!-- WHATSAPP -->
+
+        <a
+            href="https://wa.me/59897429917"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-button whatsapp"
+        >
+
+            <span class="social-icon">
+                💬
+            </span>
+
+            <span>
+                WhatsApp
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <div class="footer-line"></div>
+
+
+    <small>
+        © 2026 Flame Burger. Todos los derechos reservados.
+    </small>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="js/menu.js"></script>
+
+</body>
+
+</html>

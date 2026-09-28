@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Flame Burger | Dashboard
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🍔
+            </div>
+
+            <div>
+
+                <h1>
+                    FLAME
+                </h1>
+
+                <span>
+                    BURGER
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+
+            <a
+                href="dashboard.html"
+                class="menu-item active"
+            >
+                <span>📊</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="pedidos.html"
+                class="menu-item"
+            >
+                <span>🛒</span>
+                Pedidos
+            </a>
+
+
+            <a
+                href="productos.html"
+                class="menu-item"
+            >
+                <span>🍔</span>
+                Productos
+            </a>
+
+
+            <a
+                href="categorias.html"
+                class="menu-item"
+            >
+                <span>📁</span>
+                Categorías
+            </a>
+
+
+            <a
+                href="ventas.html"
+                class="menu-item"
+            >
+                <span>💰</span>
+                Ventas
+            </a>
+
+
+            <a
+                href="configuracion.html"
+                class="menu-item"
+            >
+                <span>⚙️</span>
+                Configuración
+            </a>
+
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="store-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        Local abierto
+                    </strong>
+
+                    <small>
+                        Recibiendo pedidos
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <button
+                class="mobile-menu"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <h2>
+                    Dashboard
+                </h2>
+
+                <p>
+                    Ventas y estadísticas
+                </p>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <button
+                    class="notification"
+                    type="button"
+                >
+                    🔔
+                </button>
+
+
+                <div class="user">
+
+                    <div class="avatar">
+                        FB
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Flame Burger
+                        </strong>
+
+                        <small>
+                            Administrador
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+
+            <!-- TITULO -->
+
+            <div class="welcome">
+
+                <div>
+
+                    <span class="eyebrow">
+                        VENTAS
+                    </span>
+
+                    <h2>
+                        Resumen del negocio 📊
+                    </h2>
+
+                    <p>
+                        Consultá las ventas de hoy,
+                        semanas, meses y cualquier
+                        período.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =====================================
+                 SELECTOR DE PERÍODO
+            ====================================== -->
+
+            <div class="period-panel">
+
+
+                <div class="period-buttons">
+
+
+                    <button
+                        class="period-btn active"
+                        data-period="hoy"
+                    >
+                        Hoy
+                    </button>
+
+
+                    <button
+                        class="period-btn"
+                        data-period="ayer"
+                    >
+                        Ayer
+                    </button>
+
+
+                    <button
+                        class="period-btn"
+                        data-period="7dias"
+                    >
+                        Últimos 7 días
+                    </button>
+
+
+                    <button
+                        class="period-btn"
+                        data-period="mes"
+                    >
+                        Este mes
+                    </button>
+
+
+                    <button
+                        class="period-btn"
+                        data-period="mesAnterior"
+                    >
+                        Mes anterior
+                    </button>
+
+
+                </div>
+
+
+                <div class="custom-period">
+
+
+                    <div>
+
+                        <label>
+                            Desde
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaDesde"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Hasta
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaHasta"
+                        >
+
+                    </div>
+
+
+                    <button
+                        id="aplicarFechas"
+                        class="primary-btn"
+                        type="button"
+                    >
+                        Consultar
+                    </button>
+
+
+                </div>
+
+
+                <div
+                    id="periodoTexto"
+                    class="period-text"
+                >
+                    Hoy
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================
+                 ESTADÍSTICAS PRINCIPALES
+            ====================================== -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        💰
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Ventas
+                        </span>
+
+                        <strong id="ventasHoy">
+                            $0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        🛒
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Pedidos
+                        </span>
+
+                        <strong id="pedidosHoy">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon red">
+                        ❌
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Cancelados
+                        </span>
+
+                        <strong id="canceladosHoy">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        📈
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Ticket promedio
+                        </span>
+
+                        <strong id="ticketPromedio">
+                            $0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================
+                 SEGUNDA FILA
+            ====================================== -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- DELIVERY / RETIRO -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h3>
+                                Tipo de pedido
+                            </h3>
+
+                            <p>
+                                Delivery vs retiro
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="delivery-stats">
+
+
+                        <div class="delivery-box">
+
+                            <span>
+                                🛵
+                            </span>
+
+                            <strong
+                                id="deliveryHoy"
+                            >
+                                0
+                            </strong>
+
+                            <small>
+                                Delivery
+                            </small>
+
+                        </div>
+
+
+                        <div class="delivery-box">
+
+                            <span>
+                                🏪
+                            </span>
+
+                            <strong
+                                id="retiroHoy"
+                            >
+                                0
+                            </strong>
+
+                            <small>
+                                Retiro
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FORMAS DE PAGO -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h3>
+                                Formas de pago
+                            </h3>
+
+                            <p>
+                                Distribución de ventas
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="formasPago"
+                    >
+
+                        <div class="loading">
+                            Cargando...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================
+                 VENTAS POR DÍA
+            ====================================== -->
+
+            <div class="panel dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h3>
+                            Ventas por día
+                        </h3>
+
+                        <p>
+                            Evolución de las ventas
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="ventasPorDia"
+                    class="ventas-dias"
+                ></div>
+
+
+            </div>
+
+
+
+            <!-- =====================================
+                 PRODUCTOS MÁS VENDIDOS
+            ====================================== -->
+
+            <div class="panel dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h3>
+                            Productos más vendidos
+                        </h3>
+
+                        <p>
+                            Los productos con mayor cantidad
+                            de ventas en el período seleccionado.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="productosVendidos"
+                ></div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<script src="js/common.js"></script>
+
+<script
+    src="js/dashboard.js"
+></script>
+
+
+</body>
+
+</html>

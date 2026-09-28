@@ -1,0 +1,705 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f5f5;
+    color: #171717;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.checkout-header {
+    height: 76px;
+    background: #111;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 6%;
+
+    border-bottom: 3px solid #f97316;
+}
+
+.checkout-logo {
+    color: white;
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.volver {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.volver:hover {
+    color: #f97316;
+}
+
+
+/* ================================
+   CONTENEDOR PRINCIPAL
+================================ */
+
+.checkout-container {
+    width: min(1150px, 92%);
+    margin: 40px auto;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(300px, .8fr);
+
+    gap: 30px;
+
+    align-items: start;
+}
+
+
+/* ================================
+   TITULO
+================================ */
+
+.titulo {
+    margin-bottom: 25px;
+}
+
+.titulo span {
+    color: #f97316;
+
+    font-size: 11px;
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+.titulo h1 {
+    margin-top: 7px;
+
+    font-size: 36px;
+    font-weight: 900;
+}
+
+.titulo p {
+    margin-top: 8px;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* ================================
+   TARJETAS
+================================ */
+
+.form-card {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 16px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, .06);
+}
+
+.form-card h2 {
+    font-size: 18px;
+
+    margin-bottom: 22px;
+}
+
+
+/* ================================
+   CAMPOS
+================================ */
+
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo:last-child {
+    margin-bottom: 0;
+}
+
+.campo label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+.campo input,
+.campo textarea {
+    width: 100%;
+
+    border: 1px solid #ddd;
+
+    background: #fafafa;
+
+    border-radius: 10px;
+
+    padding: 13px 14px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: .2s;
+}
+
+.campo textarea {
+    min-height: 90px;
+
+    resize: vertical;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    background: white;
+
+    border-color: #f97316;
+
+    box-shadow:
+        0 0 0 3px rgba(249, 115, 22, .10);
+}
+
+
+/* ================================
+   OPCIONES
+================================ */
+
+.opciones {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.opcion {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.opcion:hover {
+    border-color: #f97316;
+
+    background: #fff8f3;
+}
+
+.opcion input {
+    width: 18px;
+    height: 18px;
+
+    accent-color: #f97316;
+
+    flex-shrink: 0;
+}
+
+.opcion div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.opcion strong {
+    font-size: 14px;
+}
+
+.opcion small {
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+/* ================================
+   BOTÓN
+================================ */
+
+.confirmar {
+    width: 100%;
+
+    border: none;
+
+    border-radius: 12px;
+
+    padding: 17px;
+
+    background: #f97316;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.confirmar:hover {
+    background: #ea580c;
+
+    transform: translateY(-1px);
+}
+
+.confirmar:disabled {
+    opacity: .6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ================================
+   MENSAJES
+================================ */
+
+.mensaje {
+    margin-top: 15px;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+.mensaje.error {
+    padding: 14px;
+
+    border-radius: 10px;
+
+    background: #fef2f2;
+
+    color: #dc2626;
+}
+
+.mensaje.exito {
+    padding: 20px;
+
+    border-radius: 12px;
+
+    background: #f0fdf4;
+
+    color: #15803d;
+
+    line-height: 1.5;
+}
+
+.mensaje.exito > strong {
+    font-size: 18px;
+}
+
+
+/* ================================
+   RESUMEN
+================================ */
+
+.resumen {
+    position: sticky;
+
+    top: 95px;
+}
+
+.resumen-card {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, .06);
+}
+
+.resumen-card h2 {
+    font-size: 19px;
+
+    margin-bottom: 20px;
+}
+
+
+/* ================================
+   PRODUCTOS DEL PEDIDO
+================================ */
+
+.resumen-productos {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.resumen-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 15px;
+}
+
+.resumen-item div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.resumen-item strong {
+    font-size: 14px;
+}
+
+.resumen-item small {
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+/* ================================
+   SEPARADOR
+================================ */
+
+.linea {
+    width: 100%;
+
+    height: 1px;
+
+    background: #eee;
+
+    margin: 22px 0;
+}
+
+
+/* ================================
+   TOTAL
+================================ */
+
+.resumen-total {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.resumen-total span {
+    color: #777;
+
+    font-size: 14px;
+}
+
+.resumen-total strong {
+    color: #f97316;
+
+    font-size: 26px;
+
+    font-weight: 900;
+}
+
+
+/* ================================
+   CARRITO VACÍO
+================================ */
+
+.carrito-vacio {
+    padding: 30px 10px;
+
+    text-align: center;
+
+    color: #888;
+}
+
+.carrito-vacio div {
+    margin-bottom: 10px;
+
+    font-size: 45px;
+}
+
+.carrito-vacio p {
+    margin-bottom: 12px;
+}
+
+.carrito-vacio a {
+    color: #f97316;
+
+    text-decoration: none;
+
+    font-weight: 800;
+}
+
+
+/* ================================
+   RESPONSIVE TABLET
+================================ */
+
+@media (max-width: 850px) {
+
+    .checkout-container {
+        grid-template-columns: 1fr;
+    }
+
+    .resumen {
+        position: static;
+
+        grid-row: 1;
+    }
+
+}
+
+
+/* ================================
+   RESPONSIVE MÓVIL
+================================ */
+
+@media (max-width: 600px) {
+
+    .checkout-header {
+        height: 65px;
+
+        padding: 0 18px;
+    }
+
+    .checkout-logo {
+        font-size: 16px;
+    }
+
+    .volver {
+        font-size: 12px;
+    }
+
+    .checkout-container {
+        width: 94%;
+
+        margin: 25px auto;
+
+        gap: 18px;
+    }
+
+    .titulo h1 {
+        font-size: 29px;
+    }
+
+    .titulo p {
+        font-size: 13px;
+    }
+
+    .form-card {
+        padding: 18px;
+
+        border-radius: 13px;
+    }
+
+    .resumen-card {
+        padding: 18px;
+
+        border-radius: 13px;
+    }
+
+    .opcion {
+        padding: 13px;
+    }
+
+    .confirmar {
+        padding: 15px;
+    }
+
+}
+
+/* ================================
+   UBICACIÓN DE ENTREGA (MAPA)
+================================ */
+
+.ubicacion-entrega {
+    display: none;
+
+    margin-top: 14px;
+
+    padding-top: 14px;
+
+    border-top: 1px dashed #e5e5e5;
+}
+
+.ubicacion-entrega.activa {
+    display: block;
+}
+
+.ubicacion-ayuda {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.btn-gps {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    background: #111;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 10px 16px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    margin-bottom: 12px;
+}
+
+.btn-gps:hover {
+    background: #f97316;
+}
+
+.btn-gps:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.mapa-entrega {
+    width: 100%;
+    height: 260px;
+
+    border-radius: 12px;
+    overflow: hidden;
+
+    border: 1px solid #e5e5e5;
+
+    margin-bottom: 10px;
+}
+
+.estado-ubicacion {
+    font-size: 13px;
+    font-weight: 600;
+
+    padding: 10px 12px;
+
+    border-radius: 8px;
+
+    background: #f5f5f5;
+    color: #333;
+}
+
+.estado-ubicacion.ok {
+    background: #ecfdf3;
+    color: #067647;
+}
+
+.estado-ubicacion.bloqueado {
+    background: #fef3f2;
+    color: #b42318;
+}
+
+
+/* ================================
+   LOCAL CERRADO (OVERLAY)
+================================ */
+
+.local-cerrado-overlay {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(17, 17, 17, 0.92);
+
+    z-index: 999;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.local-cerrado-overlay.visible {
+    display: flex;
+}
+
+.local-cerrado-caja {
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 36px 28px;
+
+    max-width: 380px;
+
+    text-align: center;
+}
+
+.local-cerrado-icono {
+    font-size: 42px;
+
+    display: block;
+
+    margin-bottom: 12px;
+}
+
+.local-cerrado-caja h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.local-cerrado-caja p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 18px;
+}
+
+.local-cerrado-volver {
+    display: inline-block;
+
+    background: #f97316;
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px 20px;
+
+    border-radius: 8px;
+
+    font-weight: 700;
+    font-size: 13px;
+}

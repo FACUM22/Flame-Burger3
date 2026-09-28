@@ -1,0 +1,1694 @@
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+       background-image: url("../img/vio.jpeg");
+    color: #9932CC;
+}
+
+button,
+a {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+    width: 100%;
+    height: 75px;
+
+    background: #111;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 6%;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+
+    border-bottom: 3px solid #f97316;
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    color: white;
+    text-decoration: none;
+
+    height: 100%;
+}
+
+.logo-image {
+    width: 115px;
+    height: 58px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+/* =====================================================
+   HEADER RIGHT
+===================================================== */
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+/* =====================================================
+   ESTADO
+===================================================== */
+
+.estado-local {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #ddd;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.estado-punto {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+}
+
+.estado-punto.cerrado {
+    background: #ef4444;
+
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+}
+
+
+/* =====================================================
+   BOTÓN CARRITO
+===================================================== */
+
+.cart-button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    border: none;
+
+    background: #f97316;
+    color: white;
+
+    padding: 11px 16px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    transition: 0.2s;
+}
+
+.cart-button:hover {
+    background: #ea580c;
+    transform: translateY(-1px);
+}
+
+.cart-icon {
+    font-size: 17px;
+}
+
+#cantidadCarrito {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 22px;
+    height: 22px;
+
+    padding: 0 5px;
+
+    background: white;
+    color: #f97316;
+
+    border-radius: 50%;
+
+    font-size: 11px;
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+    position: relative;
+
+    min-height: 550px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 60px 8%;
+
+    background-image: url("../img/fondo.jpeg");
+
+    background-size: 550px auto;
+
+    background-position: right center;
+
+    background-repeat: no-repeat;
+
+    background-color: #160b18;
+
+    color: white;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   HERO OVERLAY
+===================================================== */
+
+.hero-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(10, 7, 10, 0.96) 0%,
+            rgba(10, 7, 10, 0.82) 30%,
+            rgba(10, 7, 10, 0.40) 65%,
+            rgba(10, 7, 10, 0.08) 100%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   HERO CONTENT
+===================================================== */
+
+.hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 600px;
+}
+
+
+/* =====================================================
+   TAG
+===================================================== */
+
+.hero-tag {
+    display: inline-block;
+
+    color: #f97316;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 15px;
+}
+
+
+/* =====================================================
+   TÍTULO
+===================================================== */
+
+.hero h1 {
+    font-size: clamp(48px, 6vw, 76px);
+
+    line-height: 0.98;
+
+    font-weight: 900;
+
+    letter-spacing: -2px;
+}
+
+.hero h1 span {
+    color: #f97316;
+}
+
+
+/* =====================================================
+   DESCRIPCIÓN
+===================================================== */
+
+.hero p {
+    margin-top: 22px;
+
+    color: #ddd;
+
+    font-size: 17px;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   HERO BUTTONS
+===================================================== */
+
+.hero-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 22px;
+
+    margin-top: 30px;
+}
+
+
+/* =====================================================
+   BOTÓN PRINCIPAL
+===================================================== */
+
+.hero-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    padding: 14px 22px;
+
+    background: #f97316;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    font-weight: 900;
+
+    transition: 0.2s;
+}
+
+.hero-button:hover {
+    background: #ea580c;
+
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   LINK
+===================================================== */
+
+.hero-link {
+    color: #ddd;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.hero-link:hover {
+    color: #f97316;
+}
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+.menu-section {
+    width: min(1200px, 92%);
+
+    margin: 70px auto;
+}
+
+
+/* =====================================================
+   HEADER DEL MENU
+===================================================== */
+
+.menu-header {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+
+/* =====================================================
+   TITULO
+===================================================== */
+
+.section-title span {
+    color: #f97316;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+.section-title h2 {
+    margin-top: 7px;
+
+    font-size: 36px;
+
+    font-weight: 900;
+
+    line-height: 1.1;
+}
+
+.section-title p {
+    margin-top: 8px;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   DECORACIÓN
+===================================================== */
+
+.menu-decoration {
+    font-size: 55px;
+
+    opacity: 0.15;
+}
+
+
+/* =====================================================
+   CATEGORÍAS
+===================================================== */
+
+.categorias-menu {
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 35px;
+}
+
+.categoria-btn {
+    border: 1px solid #ddd;
+
+    background: white;
+
+    color: #333;
+
+    padding: 11px 19px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    transition: 0.2s;
+}
+
+.categoria-btn:hover {
+    border-color: #f97316;
+
+    color: #f97316;
+}
+
+.categoria-btn.active {
+    background: #f97316;
+
+    border-color: #f97316;
+
+    color: white;
+}
+
+
+/* =====================================================
+   GRID PRODUCTOS
+===================================================== */
+
+.productos-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(240px, 1fr)
+        );
+
+    gap: 22px;
+}
+
+
+/* =====================================================
+   PRODUCTO
+===================================================== */
+
+.producto {
+    background: white;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.06);
+
+    display: flex;
+
+    flex-direction: column;
+
+    transition: 0.25s;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =====================================================
+   IMAGEN PRODUCTO
+===================================================== */
+
+.producto-imagen {
+    width: 100%;
+
+    height: 220px;
+
+    background: #eee;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.producto-imagen img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition: 0.3s;
+}
+
+.producto:hover .producto-imagen img {
+    transform: scale(1.04);
+}
+
+
+/* =====================================================
+   SIN IMAGEN
+===================================================== */
+
+.producto-sin-imagen {
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 50px;
+
+    color: #aaa;
+}
+
+
+/* =====================================================
+   CONTENIDO PRODUCTO
+===================================================== */
+
+.producto-contenido {
+    padding: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    flex: 1;
+}
+
+.categoria {
+    color: #f97316;
+
+    text-transform: uppercase;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 7px;
+}
+
+.producto h3 {
+    font-size: 19px;
+
+    font-weight: 900;
+
+    margin-bottom: 8px;
+}
+
+.producto p {
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    min-height: 40px;
+}
+
+
+/* =====================================================
+   PRECIO + BOTÓN
+===================================================== */
+
+.producto-bottom {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: auto;
+
+    padding-top: 18px;
+}
+
+.producto-bottom strong {
+    color: #111;
+
+    font-size: 20px;
+
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   BOTÓN AGREGAR
+===================================================== */
+
+.agregar-btn {
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #f97316;
+
+    color: white;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    transition: 0.2s;
+}
+
+.agregar-btn:hover {
+    background: #ea580c;
+
+    transform: scale(1.08);
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading-productos,
+.sin-productos,
+.error-productos {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 70px 20px;
+
+    color: #888;
+}
+
+.loading-icon {
+    font-size: 40px;
+
+    margin-bottom: 10px;
+}
+
+.loading-productos p {
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   SIN PRODUCTOS / ERROR
+===================================================== */
+
+.sin-productos > div,
+.error-productos > div {
+    font-size: 50px;
+
+    margin-bottom: 10px;
+}
+
+.sin-productos h3,
+.error-productos h3 {
+    color: #333;
+
+    font-size: 20px;
+}
+
+.sin-productos p,
+.error-productos p {
+    margin-top: 7px;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   ERROR BUTTON
+===================================================== */
+
+.error-productos button {
+    border: none;
+
+    background: #f97316;
+
+    color: white;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    font-weight: 800;
+
+    margin-top: 15px;
+
+    transition: 0.2s;
+}
+
+.error-productos button:hover {
+    background: #ea580c;
+}
+
+
+/* =====================================================
+   INFORMACIÓN
+===================================================== */
+
+.info-section {
+    background: #111;
+
+    color: white;
+
+    padding: 90px 6%;
+}
+
+.info-container {
+    width: min(1100px, 100%);
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    align-items: center;
+
+    gap: 60px;
+}
+
+
+/* =====================================================
+   CONTENIDO INFO
+===================================================== */
+
+.info-label {
+    color: #f97316;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+}
+
+.info-content h2 {
+    margin-top: 12px;
+
+    font-size: clamp(35px, 5vw, 55px);
+
+    line-height: 1;
+
+    font-weight: 900;
+}
+
+.info-content > p {
+    max-width: 550px;
+
+    margin-top: 20px;
+
+    color: #bbb;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   INFO DETAILS
+===================================================== */
+
+.info-details {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 30px;
+
+    margin-top: 30px;
+}
+
+.info-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.info-item-icon {
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #222;
+
+    border-radius: 10px;
+
+    font-size: 20px;
+}
+
+.info-item div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.info-item strong {
+    font-size: 13px;
+}
+
+.info-item span {
+    color: #888;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   FUEGO
+===================================================== */
+
+.info-fire {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 300px;
+
+    font-size: 170px;
+
+    opacity: 0.9;
+}
+
+
+/* =====================================================
+   CARRITO OVERLAY
+===================================================== */
+
+.carrito-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    visibility: hidden;
+
+    opacity: 0;
+
+    transition: 0.25s;
+
+    z-index: 2000;
+}
+
+.carrito-overlay.show {
+    visibility: visible;
+
+    opacity: 1;
+}
+
+
+/* =====================================================
+   CARRITO
+===================================================== */
+
+.carrito {
+    width: min(430px, 100%);
+
+    height: 100%;
+
+    background: white;
+
+    display: flex;
+
+    flex-direction: column;
+
+    transform: translateX(100%);
+
+    transition: 0.3s;
+}
+
+.carrito-overlay.show .carrito {
+    transform: translateX(0);
+}
+
+
+/* =====================================================
+   HEADER CARRITO
+===================================================== */
+
+.carrito-header {
+    padding: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom: 1px solid #eee;
+}
+
+.carrito-header h2 {
+    font-size: 21px;
+
+    margin-top: 4px;
+}
+
+.carrito-label {
+    color: #f97316;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+.carrito-header button {
+    border: none;
+
+    background: #f3f3f3;
+
+    width: 35px;
+
+    height: 35px;
+
+    border-radius: 50%;
+
+    font-size: 25px;
+
+    transition: 0.2s;
+}
+
+.carrito-header button:hover {
+    background: #f97316;
+
+    color: white;
+}
+
+
+/* =====================================================
+   ITEMS CARRITO
+===================================================== */
+
+.items-carrito {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 20px;
+}
+
+.carrito-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.carrito-item > div:first-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    min-width: 0;
+}
+
+.carrito-item strong {
+    font-size: 14px;
+}
+
+.carrito-item small {
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   CANTIDAD
+===================================================== */
+
+.cantidad {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.cantidad button {
+    width: 28px;
+
+    height: 28px;
+
+    border: 1px solid #ddd;
+
+    background: white;
+
+    border-radius: 7px;
+
+    font-size: 18px;
+
+    transition: 0.2s;
+}
+
+.cantidad button:hover {
+    border-color: #f97316;
+
+    color: #f97316;
+}
+
+.cantidad span {
+    min-width: 18px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+
+/* =====================================================
+   CARRITO VACÍO
+===================================================== */
+
+.carrito-vacio {
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: #888;
+}
+
+.carrito-vacio div {
+    font-size: 50px;
+
+    margin-bottom: 10px;
+}
+
+.carrito-vacio p {
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   FOOTER CARRITO
+===================================================== */
+
+.carrito-footer {
+    padding: 20px;
+
+    border-top: 1px solid #eee;
+
+    background: white;
+}
+
+.total-carrito {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 15px;
+}
+
+.total-carrito div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.total-carrito span {
+    color: #555;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+.total-carrito small {
+    color: #999;
+
+    font-size: 11px;
+}
+
+.total-carrito strong {
+    color: #f97316;
+
+    font-size: 25px;
+
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   CHECKOUT BUTTON
+===================================================== */
+
+.checkout-button {
+    width: 100%;
+
+    border: none;
+
+    background: #f97316;
+
+    color: white;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    font-size: 15px;
+
+    font-weight: 900;
+
+    transition: 0.2s;
+}
+
+.checkout-button:hover {
+    background: #ea580c;
+
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+    background: #090909;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 45px 20px;
+}
+
+.footer-logo {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    font-size: 18px;
+
+    font-weight: 900;
+}
+
+.footer-logo span {
+    font-size: 22px;
+}
+
+.footer > p {
+    color: #888;
+
+    font-size: 12px;
+
+    margin-top: 10px;
+}
+
+.footer-line {
+    width: 60px;
+
+    height: 2px;
+
+    background: #f97316;
+
+    margin: 25px auto;
+}
+
+.footer small {
+    color: #666;
+
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .hero {
+        min-height: 520px;
+
+        background-size: 480px auto;
+
+        background-position: right center;
+
+        padding: 50px 6%;
+    }
+
+    .hero-content {
+        max-width: 520px;
+    }
+
+    .hero h1 {
+        font-size: 55px;
+    }
+
+    .info-container {
+        grid-template-columns: 1fr;
+    }
+
+    .info-fire {
+        min-height: 180px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    /* HEADER */
+
+    .header {
+        height: 68px;
+
+        padding: 0 18px;
+    }
+
+    .logo {
+        height: 100%;
+    }
+
+    .logo-image {
+        width: 95px;
+        height: 52px;
+    }
+
+    .header-right {
+        gap: 10px;
+    }
+
+    .estado-local {
+        display: none;
+    }
+
+    .cart-button {
+        padding: 9px 11px;
+
+        font-size: 12px;
+    }
+
+    .cart-icon {
+        font-size: 15px;
+    }
+
+
+    /* HERO */
+
+    .hero {
+        min-height: 620px;
+
+        align-items: flex-start;
+
+        padding: 60px 22px;
+
+        background-size: 380px auto;
+
+        background-position:
+            right bottom;
+    }
+
+    .hero-overlay {
+        background:
+            linear-gradient(
+                180deg,
+                rgba(10, 7, 10, 0.96) 0%,
+                rgba(10, 7, 10, 0.78) 45%,
+                rgba(10, 7, 10, 0.25) 100%
+            );
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-tag {
+        font-size: 10px;
+
+        letter-spacing: 2px;
+    }
+
+    .hero h1 {
+        font-size: 44px;
+
+        letter-spacing: -1px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .hero-button {
+        padding: 13px 18px;
+    }
+
+
+    /* MENU */
+
+    .menu-section {
+        width: 94%;
+
+        margin: 50px auto;
+    }
+
+    .menu-header {
+        align-items: flex-start;
+    }
+
+    .menu-decoration {
+        font-size: 40px;
+    }
+
+    .section-title h2 {
+        font-size: 29px;
+    }
+
+    .categorias-menu {
+        overflow-x: auto;
+
+        flex-wrap: nowrap;
+
+        padding-bottom: 8px;
+    }
+
+    .categoria-btn {
+        flex-shrink: 0;
+    }
+
+
+    /* PRODUCTOS */
+
+    .productos-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 12px;
+    }
+
+    .producto-imagen {
+        height: 170px;
+    }
+
+    .producto-contenido {
+        padding: 14px;
+    }
+
+    .producto h3 {
+        font-size: 16px;
+    }
+
+    .producto p {
+        font-size: 12px;
+    }
+
+    .producto-bottom strong {
+        font-size: 17px;
+    }
+
+    .agregar-btn {
+        width: 36px;
+
+        height: 36px;
+
+        font-size: 22px;
+    }
+
+
+    /* INFO */
+
+    .info-section {
+        padding: 65px 22px;
+    }
+
+    .info-content h2 {
+        font-size: 38px;
+    }
+
+    .info-details {
+        flex-direction: column;
+
+        gap: 18px;
+    }
+
+    .info-fire {
+        font-size: 110px;
+
+        min-height: 100px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE PEQUEÑO
+===================================================== */
+
+@media (max-width: 450px) {
+
+    .cart-text {
+        display: none;
+    }
+
+    .cart-button {
+        padding: 9px 10px;
+    }
+
+    .hero {
+        min-height: 590px;
+
+        background-size: 340px auto;
+
+        background-position:
+            center bottom;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .hero-break {
+        display: none;
+    }
+
+    .productos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .producto-imagen {
+        height: 220px;
+    }
+
+    .menu-decoration {
+        display: none;
+    }
+
+}
+/* =====================================================
+   REDES SOCIALES FOOTER
+===================================================== */
+
+.footer-social {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 25px;
+
+    flex-wrap: wrap;
+}
+
+
+.social-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    transition: 0.2s;
+}
+
+
+.social-icon {
+    font-size: 17px;
+}
+
+
+/* INSTAGRAM */
+
+.social-button.instagram {
+    background: #c13584;
+}
+
+.social-button.instagram:hover {
+    background: #a52d70;
+
+    transform: translateY(-2px);
+}
+
+
+/* WHATSAPP */
+
+.social-button.whatsapp {
+    background: #25d366;
+}
+
+.social-button.whatsapp:hover {
+    background: #1ebe5d;
+
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   LOGO FOOTER
+===================================================== */
+
+.footer-logo-image {
+    width: 140px;
+
+    height: 65px;
+
+    object-fit: contain;
+
+    display: block;
+
+    margin: 0 auto;
+}
+
+
+.footer-description {
+    color: #888;
+
+    font-size: 12px;
+
+    margin-top: 10px;
+}
+
+
+/* =====================================================
+   FOOTER MOBILE
+===================================================== */
+
+@media (max-width: 450px) {
+
+    .footer-social {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .social-button {
+        width: 180px;
+    }
+
+}

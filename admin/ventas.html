@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Flame Burger | Ventas
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           FILTROS
+        ===================================================== */
+
+        .sales-filters {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .sales-filters-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .filter-group label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #666;
+            letter-spacing: .4px;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            height: 43px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            padding: 0 12px;
+            outline: none;
+            background: white;
+            color: #222;
+            font-size: 13px;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #f97316;
+        }
+
+        .filter-search {
+            grid-column: span 2;
+        }
+
+        .filter-actions {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .clear-btn {
+            height: 43px;
+            background: #f1f1f1;
+            color: #333;
+            border: none;
+            padding: 0 16px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background: #e7e7e7;
+        }
+
+
+        /* =====================================================
+           RESUMEN
+        ===================================================== */
+
+        .sales-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        /* =====================================================
+           TABLA
+        ===================================================== */
+
+        .sales-table-container {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 16px;
+            overflow-x: auto;
+        }
+
+        .sales-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        .sales-table th {
+            text-align: left;
+            padding: 15px;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+            font-size: 10px;
+            color: #777;
+            font-weight: 800;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .sales-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .sales-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .sales-table tbody tr:hover {
+            background: #fafafa;
+        }
+
+        .sale-number {
+            font-weight: 800;
+            color: #171717;
+        }
+
+        .sale-date {
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .sale-client strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .sale-client small {
+            display: block;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .sale-total {
+            font-size: 14px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           ESTADOS
+        ===================================================== */
+
+        .sale-status {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 7px;
+            font-size: 9px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .sale-status.nuevo {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .sale-status.confirmado {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .sale-status.preparando {
+            background: #fefce8;
+            color: #a16207;
+        }
+
+        .sale-status.listo {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .sale-status.entregado {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .sale-status.cancelado {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+
+        /* =====================================================
+           BOTÓN VER
+        ===================================================== */
+
+        .details-btn {
+            border: none;
+            background: #111;
+            color: white;
+            padding: 8px 11px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .details-btn:hover {
+            background: #2a2a2a;
+        }
+
+
+        /* =====================================================
+           SIN VENTAS
+        ===================================================== */
+
+        .empty-sales {
+            padding: 65px 20px;
+            text-align: center;
+            color: #888;
+        }
+
+        .empty-sales-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .empty-sales strong {
+            display: block;
+            color: #444;
+            font-size: 15px;
+        }
+
+        .empty-sales p {
+            margin-top: 6px;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           MODAL DETALLE
+        ===================================================== */
+
+        .sale-modal {
+            max-width: 720px;
+        }
+
+        .sale-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .sale-detail-grid > div {
+            background: #f7f7f7;
+            padding: 13px;
+            border-radius: 9px;
+        }
+
+        .sale-detail-grid span {
+            display: block;
+            font-size: 9px;
+            color: #888;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .sale-detail-grid strong {
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           PRODUCTOS DEL DETALLE
+        ===================================================== */
+
+        .sale-detail-products {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 18px 0;
+        }
+
+        .sale-detail-products h3 {
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .sale-detail-product {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 11px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sale-detail-product:last-child {
+            border-bottom: none;
+        }
+
+        .sale-detail-product strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .sale-detail-product small {
+            display: block;
+            color: #888;
+            margin-top: 4px;
+        }
+
+
+        /* =====================================================
+           OBSERVACIONES
+        ===================================================== */
+
+        .sale-observation {
+            background: #fff7ed;
+            border-left: 3px solid #f97316;
+            padding: 12px;
+            margin-top: 18px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .sale-observation strong {
+            display: block;
+        }
+
+        .sale-observation p {
+            color: #555;
+            margin-top: 6px;
+        }
+
+
+        /* =====================================================
+           TOTAL DETALLE
+        ===================================================== */
+
+        .sale-detail-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .sale-detail-total span {
+            color: #888;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .sale-detail-total strong {
+            font-size: 24px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 950px) {
+
+            .sales-filters-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .filter-search {
+                grid-column: span 2;
+            }
+
+            .sales-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .sales-filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-search {
+                grid-column: auto;
+            }
+
+            .filter-actions {
+                align-items: stretch;
+            }
+
+            .filter-actions .primary-btn,
+            .filter-actions .clear-btn {
+                flex: 1;
+            }
+
+            .sales-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .sale-detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🍔
+            </div>
+
+
+            <div>
+
+                <h1>
+                    FLAME
+                </h1>
+
+                <span>
+                    BURGER
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+
+            <a
+                href="dashboard.html"
+                class="menu-item"
+            >
+
+                <span>
+                    📊
+                </span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                href="pedidos.html"
+                class="menu-item"
+            >
+
+                <span>
+                    🛒
+                </span>
+
+                Pedidos
+
+            </a>
+
+
+            <a
+                href="productos.html"
+                class="menu-item"
+            >
+
+                <span>
+                    🍔
+                </span>
+
+                Productos
+
+            </a>
+
+
+            <a
+                href="categorias.html"
+                class="menu-item"
+            >
+
+                <span>
+                    📁
+                </span>
+
+                Categorías
+
+            </a>
+
+
+            <a
+                href="ventas.html"
+                class="menu-item active"
+            >
+
+                <span>
+                    💰
+                </span>
+
+                Ventas
+
+            </a>
+
+
+            <a
+                href="configuracion.html"
+                class="menu-item"
+            >
+
+                <span>
+                    ⚙️
+                </span>
+
+                Configuración
+
+            </a>
+
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="store-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        Local abierto
+                    </strong>
+
+                    <small>
+                        Recibiendo pedidos
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+
+            <button
+                class="mobile-menu"
+                type="button"
+            >
+
+                ☰
+
+            </button>
+
+
+            <div class="topbar-title">
+
+                <h2>
+                    Ventas
+                </h2>
+
+                <p>
+                    Historial y consulta de ventas
+                </p>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+
+                <div class="user">
+
+                    <div class="avatar">
+                        FB
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Flame Burger
+                        </strong>
+
+                        <small>
+                            Administrador
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             CONTENIDO
+        ================================================== -->
+
+        <section class="content">
+
+
+            <!-- PRESENTACIÓN -->
+
+            <div class="welcome">
+
+
+                <div>
+
+                    <span class="eyebrow">
+                        HISTORIAL
+                    </span>
+
+
+                    <h2>
+                        Ventas de Flame Burger 💰
+                    </h2>
+
+
+                    <p>
+                        Consultá, buscá y filtrá
+                        todas las ventas.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FILTROS
+            ================================================== -->
+
+            <div class="sales-filters">
+
+
+                <div class="sales-filters-grid">
+
+
+                    <!-- DESDE -->
+
+                    <div class="filter-group">
+
+                        <label>
+                            DESDE
+                        </label>
+
+                        <input
+                            type="date"
+                            id="desde"
+                        >
+
+                    </div>
+
+
+                    <!-- HASTA -->
+
+                    <div class="filter-group">
+
+                        <label>
+                            HASTA
+                        </label>
+
+                        <input
+                            type="date"
+                            id="hasta"
+                        >
+
+                    </div>
+
+
+                    <!-- ESTADO -->
+
+                    <div class="filter-group">
+
+                        <label>
+                            ESTADO
+                        </label>
+
+                        <select
+                            id="estado"
+                        >
+
+                            <option value="todos">
+                                Todos
+                            </option>
+
+                            <option value="nuevo">
+                                Nuevo
+                            </option>
+
+                            <option value="confirmado">
+                                Confirmado
+                            </option>
+
+                            <option value="preparando">
+                                Preparando
+                            </option>
+
+                            <option value="listo">
+                                Listo
+                            </option>
+
+                            <option value="entregado">
+                                Entregado
+                            </option>
+
+                            <option value="cancelado">
+                                Cancelado
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- FORMA DE PAGO -->
+
+                    <div class="filter-group">
+
+                        <label>
+                            FORMA DE PAGO
+                        </label>
+
+                        <select
+                            id="formaPago"
+                        >
+
+                            <option value="todos">
+                                Todas
+                            </option>
+
+                            <option value="efectivo">
+                                Efectivo
+                            </option>
+
+                            <option value="mercado_pago">
+                                Mercado Pago
+                            </option>
+
+                            <option value="tarjeta">
+                                Tarjeta
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ENTREGA -->
+
+                    <div class="filter-group">
+
+                        <label>
+                            ENTREGA
+                        </label>
+
+                        <select
+                            id="tipoEntrega"
+                        >
+
+                            <option value="todos">
+                                Todos
+                            </option>
+
+                            <option value="delivery">
+                                Delivery
+                            </option>
+
+                            <option value="retiro">
+                                Retiro
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- BUSCAR -->
+
+                    <div
+                        class="filter-group filter-search"
+                    >
+
+                        <label>
+                            BUSCAR
+                        </label>
+
+                        <input
+                            type="text"
+                            id="buscar"
+                            placeholder="Pedido, cliente o teléfono..."
+                        >
+
+                    </div>
+
+
+                    <!-- BOTONES -->
+
+                    <div class="filter-actions">
+
+
+                        <button
+                            id="aplicarFiltros"
+                            class="primary-btn"
+                            type="button"
+                        >
+
+                            🔎 Buscar
+
+                        </button>
+
+
+                        <button
+                            id="limpiarFiltros"
+                            class="clear-btn"
+                            type="button"
+                        >
+
+                            Limpiar
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RESUMEN
+            ================================================== -->
+
+            <div class="sales-summary">
+
+
+                <!-- VENTAS -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon orange">
+                        💰
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Ventas
+                        </span>
+
+
+                        <strong
+                            id="totalVentas"
+                        >
+                            $0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- PEDIDOS -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon blue">
+                        🛒
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Pedidos
+                        </span>
+
+
+                        <strong
+                            id="totalPedidos"
+                        >
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- CANCELADOS -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon red">
+                        ❌
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Cancelados
+                        </span>
+
+
+                        <strong
+                            id="totalCancelados"
+                        >
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 TABLA
+            ================================================== -->
+
+            <div class="sales-table-container">
+
+
+                <table class="sales-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Pedido
+                            </th>
+
+                            <th>
+                                Fecha
+                            </th>
+
+                            <th>
+                                Cliente
+                            </th>
+
+                            <th>
+                                Entrega
+                            </th>
+
+                            <th>
+                                Pago
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Acción
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="tablaVentas"
+                    ></tbody>
+
+
+                </table>
+
+
+
+                <!-- SIN RESULTADOS -->
+
+                <div
+                    id="emptySales"
+                    class="empty-sales"
+                    style="display:none;"
+                >
+
+                    <div class="empty-sales-icon">
+                        💰
+                    </div>
+
+
+                    <strong>
+                        No se encontraron ventas
+                    </strong>
+
+
+                    <p>
+                        Probá cambiando los filtros.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL DETALLE DE VENTA
+========================================================= -->
+
+<div
+    id="modalVenta"
+    class="modal"
+>
+
+
+    <div class="modal-overlay"></div>
+
+
+    <div
+        class="modal-box sale-modal"
+    >
+
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+
+            <div>
+
+                <span class="eyebrow">
+                    DETALLE DE VENTA
+                </span>
+
+
+                <h2 id="detalleTitulo">
+                    Pedido
+                </h2>
+
+            </div>
+
+
+            <button
+                id="cerrarVenta"
+                class="close-btn"
+                type="button"
+            >
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- CONTENIDO -->
+
+        <div
+            id="detalleVenta"
+        >
+
+            <div
+                style="
+                    text-align:center;
+                    padding:30px;
+                    color:#888;
+                "
+            >
+
+                Cargando...
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- JAVASCRIPT -->
+
+<script src="js/common.js"></script>
+
+<script
+    src="js/ventas.js"
+></script>
+
+
+</body>
+
+</html>

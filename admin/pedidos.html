@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Flame Burger | Pedidos
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+    <style>
+
+        .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .orders-counter {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fed7aa;
+            padding: 9px 13px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .order-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .order-filter {
+            border: 1px solid #ddd;
+            background: white;
+            color: #333;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .order-filter.active {
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .order-card {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 16px;
+            padding: 20px;
+            transition: .2s;
+        }
+
+        .order-card.new-order {
+            border: 2px solid #f97316;
+            box-shadow: 0 8px 25px rgba(249,115,22,.12);
+        }
+
+        .order-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,.06);
+        }
+
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .order-number {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .order-date {
+            color: #888;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .new-label {
+            display: inline-block;
+            margin-top: 8px;
+            background: #f97316;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        .order-status {
+            padding: 7px 10px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .status-nuevo {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .status-confirmado {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .status-preparando {
+            background: #fefce8;
+            color: #a16207;
+        }
+
+        .status-listo {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .status-entregado {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .status-cancelado {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .order-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .order-info {
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 13px;
+        }
+
+        .order-info span {
+            display: block;
+            color: #888;
+            font-size: 9px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .order-info strong {
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        .order-products {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 14px 0;
+            margin-bottom: 16px;
+        }
+
+        .order-product {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 8px 0;
+        }
+
+        .order-product strong {
+            font-size: 13px;
+        }
+
+        .order-product small {
+            display: block;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        .order-observation {
+            background: #fff8ef;
+            border-left: 3px solid #f97316;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+
+        .order-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .order-total-label {
+            color: #888;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .order-total {
+            font-size: 23px;
+            font-weight: 800;
+            margin-top: 3px;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .order-actions button {
+            border: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .btn-confirm {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .btn-preparing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn-ready {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .btn-delivered {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-cancel {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .empty-orders {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            padding: 60px 20px;
+            text-align: center;
+            color: #888;
+        }
+
+        .empty-orders .empty-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .refresh-info {
+            color: #888;
+            font-size: 11px;
+        }
+
+        @media (max-width: 850px) {
+
+            .order-info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .order-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-actions {
+                width: 100%;
+            }
+
+            .order-actions button {
+                flex: 1;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🍔
+            </div>
+
+            <div>
+
+                <h1>FLAME</h1>
+
+                <span>
+                    BURGER
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+            <a
+                href="dashboard.html"
+                class="menu-item"
+            >
+                <span>📊</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="pedidos.html"
+                class="menu-item active"
+            >
+                <span>🛒</span>
+                Pedidos
+            </a>
+
+
+            <a
+                href="productos.html"
+                class="menu-item"
+            >
+                <span>🍔</span>
+                Productos
+            </a>
+
+
+            <a
+                href="categorias.html"
+                class="menu-item"
+            >
+                <span>📁</span>
+                Categorías
+            </a>
+
+
+            <a
+                href="ventas.html"
+                class="menu-item"
+            >
+                <span>💰</span>
+                Ventas
+            </a>
+
+
+            <a
+                href="configuracion.html"
+                class="menu-item"
+            >
+                <span>⚙️</span>
+                Configuración
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="store-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        Local abierto
+                    </strong>
+
+                    <small>
+                        Recibiendo pedidos
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <button
+                class="mobile-menu"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <h2>
+                    Pedidos
+                </h2>
+
+                <p>
+                    Gestión de pedidos
+                </p>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <button
+                    class="notification"
+                    type="button"
+                >
+                    🔔
+                </button>
+
+
+                <div class="user">
+
+                    <div class="avatar">
+                        FB
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Flame Burger
+                        </strong>
+
+                        <small>
+                            Administrador
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENIDO -->
+
+        <section class="content">
+
+
+            <div class="welcome">
+
+                <div>
+
+                    <span class="eyebrow">
+                        PEDIDOS
+                    </span>
+
+                    <h2>
+                        Pedidos de Flame Burger 🛒
+                    </h2>
+
+                    <p>
+                        Gestioná los pedidos que llegan
+                        desde la web.
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <div
+                        id="pedidosNuevos"
+                        class="orders-counter"
+                    >
+                        0 pedidos nuevos
+                    </div>
+
+                    <div class="refresh-info">
+                        Actualización automática
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PANEL -->
+
+            <div class="panel">
+
+
+                <!-- FILTROS -->
+
+                <div class="order-filters">
+
+
+                    <button
+                        class="order-filter active"
+                        data-filter="todos"
+                    >
+                        Todos
+                    </button>
+
+
+                    <button
+                        class="order-filter"
+                        data-filter="nuevo"
+                    >
+                        Nuevos
+                    </button>
+
+
+                    <button
+                        class="order-filter"
+                        data-filter="confirmado"
+                    >
+                        Confirmados
+                    </button>
+
+
+                    <button
+                        class="order-filter"
+                        data-filter="preparando"
+                    >
+                        Preparando
+                    </button>
+
+
+                    <button
+                        class="order-filter"
+                        data-filter="listo"
+                    >
+                        Listos
+                    </button>
+
+
+                    <button
+                        class="order-filter"
+                        data-filter="entregado"
+                    >
+                        Entregados
+                    </button>
+
+
+                    <button
+                        class="order-filter"
+                        data-filter="cancelado"
+                    >
+                        Cancelados
+                    </button>
+
+                </div>
+
+
+                <!-- PEDIDOS -->
+
+                <div
+                    id="ordersList"
+                    class="orders-list"
+                ></div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/common.js"></script>
+<script src="js/pedidos.js"></script>
+
+</body>
+
+</html>
