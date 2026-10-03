@@ -1219,6 +1219,22 @@ function procesarResultadoMercadoPago() {
         return;
     }
 
+    // Al volver de Mercado Pago, el servidor verifica el pago directo
+    // con MP (no depende de que el webhook haya llegado).
+    const pedidoRetorno = parametros.get("external_reference");
+    const pagoRetorno = parametros.get("payment_id");
+
+    if (pedidoRetorno && estado !== "failure") {
+        fetch("/api/pagos/confirmar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                pedidoId: pedidoRetorno,
+                paymentId: pagoRetorno
+            })
+        }).catch(() => {});
+    }
+
 
     // =================================================
     // APROBADO

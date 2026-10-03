@@ -498,6 +498,12 @@ const PORT =
 // INICIAR SERVIDOR
 // =====================================================
 
+// Revisa cada 20 s los pagos de Mercado Pago que no se confirmaron
+setInterval(
+    pagosRoutes.reconciliarPedidosPendientes,
+    20000
+);
+
 app.listen(
     PORT,
     () => {

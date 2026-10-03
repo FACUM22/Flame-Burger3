@@ -109,7 +109,7 @@
 
         try {
 
-            const respuesta = await fetch(API_PEDIDOS);
+            const respuesta = await fetch(API_PEDIDOS, { cache: "no-store" });
 
             if (!respuesta.ok) return;
 
@@ -164,7 +164,10 @@
 
     }
 
-    setInterval(revisarPedidosNuevos, 8000);
+    setInterval(revisarPedidosNuevos, 4000);
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) revisarPedidosNuevos();
+    });
     revisarPedidosNuevos();
 
 

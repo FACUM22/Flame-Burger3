@@ -36,9 +36,9 @@ router.get("/resumen", async (req, res) => {
 
             // Por defecto: hoy
 
-            fechaDesde = new Date()
-                .toISOString()
-                .slice(0, 10);
+            fechaDesde = new Date().toLocaleDateString("en-CA", {
+                timeZone: "America/Montevideo"
+            });
 
             fechaHasta = fechaDesde;
         }

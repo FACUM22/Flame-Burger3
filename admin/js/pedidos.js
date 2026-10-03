@@ -14,7 +14,7 @@ async function cargarPedidos() {
 try {
 
 const respuesta =
-    await fetch(API_PEDIDOS);
+    await fetch(API_PEDIDOS, { cache: "no-store" });
 
 if (!respuesta.ok) {
 
@@ -1727,8 +1727,15 @@ return div.innerHTML;
 
 setInterval(
 cargarPedidos,
-10000
+4000
 );
+
+// Los navegadores frenan los timers de las pestañas en segundo plano:
+// al volver a la pestaña actualizamos al instante.
+document.addEventListener("visibilitychange", () => {
+if (!document.hidden) cargarPedidos();
+});
+window.addEventListener("focus", cargarPedidos);
 
 // =====================================================
 // INICIAR

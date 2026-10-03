@@ -641,11 +641,20 @@ try {
             LEFT JOIN clientes c
                 ON c.id = p.cliente_id
 
+            ${
+                req.query.todos === "1"
+                    ? ""
+                    : `WHERE p.creado_en > NOW() - INTERVAL '48 hours'
+                       OR p.estado IN ('nuevo', 'preparando', 'listo')`
+            }
+
             ORDER BY
                 p.creado_en DESC
             `
         );
 
+
+    res.set("Cache-Control", "no-store");
 
     res.json(
         resultado.rows
