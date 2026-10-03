@@ -129,7 +129,7 @@ try {
 
         condiciones.push(`
             (
-                CAST(p.id AS TEXT) ILIKE $${contador}
+                CAST(p.numero AS TEXT) ILIKE $${contador}
                 OR c.nombre ILIKE $${contador}
                 OR c.telefono ILIKE $${contador}
             )
@@ -157,6 +157,8 @@ try {
         SELECT
 
             p.id,
+
+            p.numero,
 
             p.tipo_entrega,
 

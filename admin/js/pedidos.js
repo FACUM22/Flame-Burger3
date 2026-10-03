@@ -197,7 +197,7 @@ tarjeta.innerHTML = `
 
         <div class="order-number">
 
-            Pedido #${pedido.id}
+            Pedido #${pedido.numero ?? pedido.id}
 
         </div>
 
@@ -761,7 +761,7 @@ if (!ventana) {
 }
 
 const numeroPedido =
-    pedido.id;
+    pedido.numero ?? pedido.id;
 
 const cliente =
     pedido.cliente_nombre ||
@@ -1455,7 +1455,7 @@ try {
 
 const confirmar =
     confirm(
-        `¿Cambiar el pedido #${pedidoId} a "${obtenerTextoEstado(nuevoEstado)}"?`
+        `¿Cambiar el pedido #${(pedidos.find(x => x.id == pedidoId) || {}).numero ?? pedidoId} a "${obtenerTextoEstado(nuevoEstado)}"?`
     );
 
 if (!confirmar) {

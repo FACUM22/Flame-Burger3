@@ -576,25 +576,68 @@ async function mpFetch(url) {
     return data;
 }
 
-// Pasa el pedido de en_proceso_pago a nuevo (solo si estaba esperando pago)
+// Pasa el pedido de en_proceso_pago a nuevo y le asigna el
+// siguiente número correlativo (solo si estaba esperando pago).
 async function marcarPedidoPagado(pedidoId) {
 
-    const r = await pool.query(
-        `
-        UPDATE pedidos
-        SET estado = 'nuevo'
-        WHERE id = $1
-          AND forma_pago = 'mercado_pago'
-          AND estado = 'en_proceso_pago'
-        `,
-        [pedidoId]
-    );
+    const client = await pool.connect();
 
-    if (r.rowCount > 0) {
-        console.log(`✅ Pedido #${pedidoId} confirmado por Mercado Pago.`);
+    try {
+
+        await client.query("BEGIN");
+
+        const r = await client.query(
+            `
+            UPDATE pedidos
+            SET estado = 'nuevo'
+            WHERE id = $1
+              AND forma_pago = 'mercado_pago'
+              AND estado = 'en_proceso_pago'
+            RETURNING id
+            `,
+            [pedidoId]
+        );
+
+        if (r.rowCount === 0) {
+            await client.query("ROLLBACK");
+            return false;
+        }
+
+        const contador = await client.query(
+            `
+            INSERT INTO contador_pedidos (id, ultimo)
+            VALUES (1, 1)
+            ON CONFLICT (id) DO UPDATE
+            SET ultimo = contador_pedidos.ultimo + 1
+            RETURNING ultimo
+            `
+        );
+
+        const numero = contador.rows[0].ultimo;
+
+        await client.query(
+            "UPDATE pedidos SET numero = $1 WHERE id = $2",
+            [numero, pedidoId]
+        );
+
+        await client.query("COMMIT");
+
+        console.log(
+            `✅ Pedido #${numero} (id ${pedidoId}) confirmado por Mercado Pago.`
+        );
+
+        return true;
+
+    } catch (error) {
+
+        await client.query("ROLLBACK").catch(() => {});
+        throw error;
+
+    } finally {
+
+        client.release();
+
     }
-
-    return r.rowCount > 0;
 }
 
 async function confirmarPagoPorId(paymentId) {

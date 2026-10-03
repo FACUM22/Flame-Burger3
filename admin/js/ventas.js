@@ -326,7 +326,7 @@ ventas.forEach(
             <td>
 
                 <div class="sale-number">
-                    #${venta.id}
+                    #${venta.numero ?? venta.id}
                 </div>
 
             </td>

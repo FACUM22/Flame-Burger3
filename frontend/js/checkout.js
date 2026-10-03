@@ -1096,7 +1096,7 @@ async function confirmarPedido() {
                     : "";
 
             mostrarMensaje(
-                `¡Pedido realizado correctamente! Número de pedido: #${resultado.id}${infoEnvio}`,
+                `¡Pedido realizado correctamente! Número de pedido: #${resultado.numero ?? resultado.id}${infoEnvio}`,
                 "success"
             );
 
@@ -1136,7 +1136,7 @@ async function confirmarPedido() {
                     : "";
 
             mostrarMensaje(
-                `¡Pedido realizado correctamente! Pagás con tarjeta al recibir. Número de pedido: #${resultado.id}${infoEnvio}`,
+                `¡Pedido realizado correctamente! Pagás con tarjeta al recibir. Número de pedido: #${resultado.numero ?? resultado.id}${infoEnvio}`,
                 "success"
             );
 

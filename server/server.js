@@ -7,6 +7,7 @@ require("dotenv").config();
 
 
 const pool = require("./database");
+const migrar = require("./utils/migrar");
 
 const productosRoutes = require("./routes/productos");
 const pedidosRoutes = require("./routes/pedidos");
@@ -504,7 +505,9 @@ setInterval(
     20000
 );
 
-app.listen(
+migrar()
+    .catch((e) => console.error("❌ ERROR EN MIGRACIÓN:", e.message))
+    .then(() => app.listen(
     PORT,
     () => {
 
@@ -571,4 +574,4 @@ app.listen(
         console.log("");
 
     }
-);
+));

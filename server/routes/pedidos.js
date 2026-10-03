@@ -527,6 +527,33 @@ try {
     // CONFIRMAR TRANSACCIÓN
     // =================================================
 
+    // =================================================
+    // NÚMERO CORRELATIVO (solo pedidos ya confirmados)
+    // Se pide al final de la transacción para que el bloqueo
+    // dure lo mínimo. Si algo falla antes, no se gasta número.
+    // =================================================
+
+    if (estadoInicial === "nuevo") {
+
+        const contador = await client.query(
+            `
+            INSERT INTO contador_pedidos (id, ultimo)
+            VALUES (1, 1)
+            ON CONFLICT (id) DO UPDATE
+            SET ultimo = contador_pedidos.ultimo + 1
+            RETURNING ultimo
+            `
+        );
+
+        pedido.numero = contador.rows[0].ultimo;
+
+        await client.query(
+            "UPDATE pedidos SET numero = $1 WHERE id = $2",
+            [pedido.numero, pedido.id]
+        );
+
+    }
+
     await client.query("COMMIT");
 
 
@@ -543,6 +570,8 @@ try {
 
         id:
             pedido.id,
+        numero:
+            pedido.numero ?? null,
 
         total:
             Number(
@@ -623,6 +652,7 @@ try {
             `
             SELECT
                 p.id,
+                p.numero,
                 p.cliente_id,
                 c.nombre AS cliente_nombre,
                 c.telefono,
@@ -719,6 +749,7 @@ try {
             `
             SELECT
                 p.id,
+                p.numero,
                 p.cliente_id,
                 c.nombre AS cliente_nombre,
                 c.telefono,

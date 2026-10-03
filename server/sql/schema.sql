@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS clientes CASCADE;
 DROP TABLE IF EXISTS productos CASCADE;
 DROP TABLE IF EXISTS categorias CASCADE;
 DROP TABLE IF EXISTS configuracion CASCADE;
+DROP TABLE IF EXISTS contador_pedidos CASCADE;
 
 -- =====================================================
 -- CATEGORÍAS
@@ -70,6 +71,9 @@ CREATE TABLE pedidos (
             'cancelado'
         )
     ),
+    -- Número correlativo que ve el local/cliente (1, 2, 3...).
+    -- Solo lo reciben los pedidos confirmados (ver server/utils/migrar.js)
+    numero INTEGER UNIQUE,
     total NUMERIC(10, 2) NOT NULL DEFAULT 0,
     observaciones TEXT DEFAULT '',
 
@@ -122,6 +126,17 @@ CREATE TABLE configuracion (
 
 INSERT INTO configuracion (id, abierto, local_lat, local_lng, envio_gratis_hasta_km, envio_costo, envio_maximo_km)
 VALUES (1, TRUE, -34.8266368, -56.1682700, 3, 100, 6);
+
+-- =====================================================
+-- CONTADOR DE NÚMEROS DE PEDIDO (sin saltos)
+-- =====================================================
+
+CREATE TABLE contador_pedidos (
+    id SMALLINT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+    ultimo INTEGER NOT NULL DEFAULT 0
+);
+
+INSERT INTO contador_pedidos (id, ultimo) VALUES (1, 0);
 
 -- =====================================================
 -- LISTO
