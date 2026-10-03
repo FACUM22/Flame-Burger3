@@ -2,6 +2,7 @@ const API_PEDIDOS = "/api/pedidos";
 
 let pedidos = [];
 let filtroActual = "todos";
+let ultimaHuellaPedidos = "";
 
 const ordersList =
 document.getElementById("ordersList");
@@ -24,10 +25,26 @@ if (!respuesta.ok) {
 
 }
 
-pedidos =
+const datosNuevos =
     await respuesta.json();
 
+// Solo redibujamos si algo cambió: así la lista no parpadea
+// ni salta de posición cada vez que consulta al servidor.
+const huella = JSON.stringify(datosNuevos);
+
+if (huella === ultimaHuellaPedidos) {
+    return;
+}
+
+ultimaHuellaPedidos = huella;
+
+pedidos = datosNuevos;
+
+const scrollAnterior = window.scrollY;
+
 mostrarPedidos();
+
+window.scrollTo(0, scrollAnterior);
 
 } catch (error) {
 
@@ -1735,7 +1752,7 @@ cargarPedidos,
 document.addEventListener("visibilitychange", () => {
 if (!document.hidden) cargarPedidos();
 });
-window.addEventListener("focus", cargarPedidos);
+
 
 // =====================================================
 // INICIAR

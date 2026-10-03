@@ -54,13 +54,13 @@ router.get("/resumen", async (req, res) => {
 
                 COALESCE(
                     SUM(total) FILTER (
-                        WHERE estado != 'cancelado'
+                        WHERE estado NOT IN ('cancelado', 'en_proceso_pago')
                     ),
                     0
                 ) AS ventas,
 
                 COUNT(*) FILTER (
-                    WHERE estado != 'cancelado'
+                    WHERE estado NOT IN ('cancelado', 'en_proceso_pago')
                 ) AS pedidos,
 
                 COUNT(*) FILTER (
@@ -69,17 +69,17 @@ router.get("/resumen", async (req, res) => {
 
                 COUNT(*) FILTER (
                     WHERE tipo_entrega = 'delivery'
-                    AND estado != 'cancelado'
+                    AND estado NOT IN ('cancelado', 'en_proceso_pago')
                 ) AS delivery,
 
                 COUNT(*) FILTER (
                     WHERE tipo_entrega = 'retiro'
-                    AND estado != 'cancelado'
+                    AND estado NOT IN ('cancelado', 'en_proceso_pago')
                 ) AS retiro,
 
                 COALESCE(
                     AVG(total) FILTER (
-                        WHERE estado != 'cancelado'
+                        WHERE estado NOT IN ('cancelado', 'en_proceso_pago')
                     ),
                     0
                 ) AS ticket_promedio
@@ -115,7 +115,7 @@ router.get("/resumen", async (req, res) => {
 
             FROM pedidos
 
-            WHERE estado != 'cancelado'
+            WHERE estado NOT IN ('cancelado', 'en_proceso_pago')
 
             AND creado_en >= $1::date
 
@@ -161,7 +161,7 @@ router.get("/resumen", async (req, res) => {
                 INNER JOIN pedidos pe
                     ON dp.pedido_id = pe.id
 
-                WHERE pe.estado != 'cancelado'
+                WHERE pe.estado NOT IN ('cancelado', 'en_proceso_pago')
 
                 AND pe.creado_en >= $1::date
 
@@ -197,13 +197,13 @@ router.get("/resumen", async (req, res) => {
 
                     COALESCE(
                         SUM(total) FILTER (
-                            WHERE estado != 'cancelado'
+                            WHERE estado NOT IN ('cancelado', 'en_proceso_pago')
                         ),
                         0
                     ) AS ventas,
 
                     COUNT(*) FILTER (
-                        WHERE estado != 'cancelado'
+                        WHERE estado NOT IN ('cancelado', 'en_proceso_pago')
                     ) AS pedidos,
 
                     COUNT(*) FILTER (

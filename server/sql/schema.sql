@@ -59,7 +59,7 @@ CREATE TABLE pedidos (
     id SERIAL PRIMARY KEY,
     cliente_id INTEGER REFERENCES clientes(id) ON DELETE SET NULL,
     tipo_entrega TEXT NOT NULL CHECK (tipo_entrega IN ('delivery', 'retiro')),
-    forma_pago TEXT NOT NULL CHECK (forma_pago IN ('efectivo', 'mercado_pago')),
+    forma_pago TEXT NOT NULL CHECK (forma_pago IN ('efectivo', 'mercado_pago', 'tarjeta_pos')),
     estado TEXT NOT NULL DEFAULT 'nuevo' CHECK (
         estado IN (
             'en_proceso_pago',
