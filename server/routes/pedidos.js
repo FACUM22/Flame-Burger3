@@ -6,6 +6,8 @@ const pool = require("../database");
 
 const { calcularDistanciaKm } = require("../utils/distancia");
 
+const { notificarPedidoConfirmado } = require("../utils/notificar");
+
 // =====================================================
 // ESTADOS PERMITIDOS
 // =====================================================
@@ -555,6 +557,17 @@ try {
     }
 
     await client.query("COMMIT");
+
+
+    // =================================================
+    // AVISAR AL CLIENTE (efectivo / tarjeta POS)
+    // Los de Mercado Pago se avisan cuando se confirma el pago.
+    // No se espera el envío: un fallo acá no afecta al pedido.
+    // =================================================
+
+    if (estadoInicial === "nuevo") {
+        notificarPedidoConfirmado(pedido.id);
+    }
 
 
     // =================================================
