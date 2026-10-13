@@ -90,6 +90,21 @@ function mostrarCartelPedido(resultado, datos) {
                rel="noopener">
                 Confirmar pedido
             </a>
+            <div class="cartel-pedido-email">
+                <p class="cartel-pedido-texto">
+                    ¿Querés recibir la confirmación por email?
+                </p>
+                <input
+                    type="email"
+                    class="cartel-pedido-email-input"
+                    placeholder="tuemail@ejemplo.com"
+                    autocomplete="email"
+                >
+                <button type="button" class="cartel-pedido-email-boton">
+                    Enviar por email
+                </button>
+                <p class="cartel-pedido-email-estado" aria-live="polite"></p>
+            </div>
             <a class="cartel-pedido-volver" href="/">Volver al menú</a>
         </div>
     `;
@@ -100,6 +115,54 @@ function mostrarCartelPedido(resultado, datos) {
 
     boton.addEventListener("click", () => {
         boton.textContent = "Abriendo WhatsApp…";
+    });
+
+    // ---- Confirmación por email ----
+    const emailInput = overlay.querySelector(".cartel-pedido-email-input");
+    const emailBoton = overlay.querySelector(".cartel-pedido-email-boton");
+    const emailEstado = overlay.querySelector(".cartel-pedido-email-estado");
+
+    emailBoton.addEventListener("click", async () => {
+
+        const email = emailInput.value.trim();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            emailEstado.textContent = "Ingresá un email válido.";
+            emailEstado.className = "cartel-pedido-email-estado error";
+            emailInput.focus();
+            return;
+        }
+
+        emailBoton.disabled = true;
+        emailBoton.textContent = "Enviando…";
+        emailEstado.textContent = "";
+
+        try {
+
+            const r = await fetch(`/api/pedidos/${resultado.id}/email`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, telefono: datos.telefono })
+            });
+
+            const data = await r.json().catch(() => ({}));
+
+            if (!r.ok) {
+                throw new Error(data.error || "No se pudo enviar el email.");
+            }
+
+            emailInput.disabled = true;
+            emailBoton.textContent = "Email enviado ✓";
+            emailEstado.textContent = "Revisá tu bandeja de entrada (y el spam).";
+            emailEstado.className = "cartel-pedido-email-estado ok";
+
+        } catch (error) {
+
+            emailBoton.disabled = false;
+            emailBoton.textContent = "Enviar por email";
+            emailEstado.textContent = error.message;
+            emailEstado.className = "cartel-pedido-email-estado error";
+        }
     });
 }
 

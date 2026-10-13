@@ -64,6 +64,11 @@ async function migrar() {
 
         }
 
+        // Marca si ya se mandó el email de confirmación (evita reenvíos)
+        await client.query(
+            "ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS email_enviado BOOLEAN NOT NULL DEFAULT FALSE"
+        );
+
         await client.query("COMMIT");
 
     } catch (error) {
