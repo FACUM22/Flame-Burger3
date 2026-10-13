@@ -4,8 +4,6 @@ const router = express.Router();
 
 const pool = require("../database");
 
-const { notificarPedidoConfirmado } = require("../utils/notificar");
-
 
 // =====================================================
 // POST /api/pagos/crear
@@ -627,9 +625,6 @@ async function marcarPedidoPagado(pedidoId) {
         console.log(
             `✅ Pedido #${numero} (id ${pedidoId}) confirmado por Mercado Pago.`
         );
-
-        // Avisar al cliente (sin esperar; un fallo no afecta al pago)
-        notificarPedidoConfirmado(pedidoId);
 
         return true;
 

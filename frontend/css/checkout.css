@@ -703,3 +703,74 @@ body {
     font-weight: 700;
     font-size: 13px;
 }
+
+
+/* ================================
+   CARTEL "PEDIDO REALIZADO"
+================================ */
+
+.cartel-pedido-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.cartel-pedido {
+    width: 100%;
+    max-width: 400px;
+    padding: 28px 22px;
+    border-radius: 16px;
+    background: #fff;
+    color: #222;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.cartel-pedido-icono {
+    font-size: 48px;
+    line-height: 1;
+}
+
+.cartel-pedido h2 {
+    margin: 12px 0 6px;
+    font-size: 22px;
+}
+
+.cartel-pedido-numero {
+    margin: 0 0 10px;
+    font-size: 16px;
+}
+
+.cartel-pedido-texto {
+    margin: 0 0 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+.cartel-pedido-boton {
+    display: block;
+    padding: 15px;
+    border-radius: 12px;
+    background: #25d366;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.cartel-pedido-boton:hover {
+    background: #1fb857;
+}
+
+.cartel-pedido-volver {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #666;
+}

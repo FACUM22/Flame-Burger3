@@ -2,6 +2,107 @@ const API_PEDIDOS = "/api/pedidos";
 const API_PAGOS = "/api/pagos/crear";
 const API_CONFIGURACION = "/api/configuracion";
 
+// =====================================================
+// WHATSAPP DEL LOCAL
+// Número del WhatsApp de Flame Burger, solo dígitos y con código
+// de país. Ejemplo: "59899123456". Si queda vacío, el botón abre
+// WhatsApp para que el cliente elija a quién mandar el mensaje.
+// =====================================================
+
+const WHATSAPP_LOCAL = "";
+
+const NOMBRES_PAGO = {
+    efectivo: "Efectivo",
+    tarjeta_pos: "Tarjeta (POS al recibir)",
+    mercado_pago: "Mercado Pago"
+};
+
+function armarTextoWhatsApp(resultado, datos) {
+
+    const numero = resultado.numero ?? resultado.id;
+
+    const lineas = [
+        `Hola! Hice el pedido *#${numero}* en Flame Burger 🔥`,
+        "",
+        `Nombre: ${datos.nombre}`,
+        `Teléfono: ${datos.telefono}`,
+        ""
+    ];
+
+    datos.productos.forEach((p) => {
+        lineas.push(`• ${p.cantidad}x ${p.nombre}`);
+    });
+
+    lineas.push("");
+
+    if (datos.entrega === "delivery") {
+        lineas.push(`Entrega: Delivery a ${datos.direccion}`);
+        lineas.push(
+            Number(resultado.costo_envio) > 0
+                ? `Envío: $${resultado.costo_envio}`
+                : "Envío: gratis"
+        );
+    } else {
+        lineas.push("Entrega: Retiro en el local");
+    }
+
+    lineas.push(`Total: $${Number(resultado.total).toFixed(2)}`);
+    lineas.push(`Pago: ${NOMBRES_PAGO[datos.pago] || datos.pago}`);
+
+    if (datos.comentarios) {
+        lineas.push(`Comentarios: ${datos.comentarios}`);
+    }
+
+    return lineas.join("\n");
+}
+
+// Cartel "Pedido realizado con éxito" + botón que abre WhatsApp
+// con el mensaje ya armado.
+function mostrarCartelPedido(resultado, datos) {
+
+    const numero = resultado.numero ?? resultado.id;
+
+    const texto = armarTextoWhatsApp(resultado, datos);
+
+    const destino = String(WHATSAPP_LOCAL || "").replace(/\D/g, "");
+
+    const enlace =
+        `https://wa.me/${destino}?text=${encodeURIComponent(texto)}`;
+
+    const overlay = document.createElement("div");
+
+    overlay.className = "cartel-pedido-overlay";
+
+    overlay.innerHTML = `
+        <div class="cartel-pedido" role="dialog" aria-modal="true">
+            <div class="cartel-pedido-icono">✅</div>
+            <h2>¡Tu pedido se realizó con éxito!</h2>
+            <p class="cartel-pedido-numero">
+                Número de pedido: <strong>#${escaparHTML(String(numero))}</strong>
+            </p>
+            <p class="cartel-pedido-texto">
+                Tocá <strong>Confirmar pedido</strong> y se abre WhatsApp
+                con tus datos. Solo tenés que apretar enviar.
+            </p>
+            <a class="cartel-pedido-boton"
+               href="${enlace}"
+               target="_blank"
+               rel="noopener">
+                Confirmar pedido
+            </a>
+            <a class="cartel-pedido-volver" href="/">Volver al menú</a>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const boton = overlay.querySelector(".cartel-pedido-boton");
+
+    boton.addEventListener("click", () => {
+        boton.textContent = "Abriendo WhatsApp…";
+    });
+}
+
 const carrito = JSON.parse(localStorage.getItem("flameCarrito")) || [];
 
 // =====================================================
@@ -1108,11 +1209,18 @@ async function confirmarPedido() {
             }
 
 
-            setTimeout(() => {
-
-                window.location.href = "/";
-
-            }, 4000);
+            mostrarCartelPedido(resultado, {
+                nombre,
+                telefono,
+                direccion,
+                comentarios,
+                entrega,
+                pago,
+                productos: carrito.map((p) => ({
+                    nombre: p.nombre,
+                    cantidad: Number(p.cantidad)
+                }))
+            });
 
 
             return;
@@ -1148,11 +1256,18 @@ async function confirmarPedido() {
             }
 
 
-            setTimeout(() => {
-
-                window.location.href = "/";
-
-            }, 4000);
+            mostrarCartelPedido(resultado, {
+                nombre,
+                telefono,
+                direccion,
+                comentarios,
+                entrega,
+                pago,
+                productos: carrito.map((p) => ({
+                    nombre: p.nombre,
+                    cantidad: Number(p.cantidad)
+                }))
+            });
 
 
             return;
