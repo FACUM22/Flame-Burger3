@@ -733,13 +733,14 @@ router.post("/confirmar", async (req, res) => {
         }
 
         const estado = await pool.query(
-            "SELECT estado FROM pedidos WHERE id = $1",
+            "SELECT estado, numero FROM pedidos WHERE id = $1",
             [pedidoId]
         );
 
         res.json({
             ok: true,
-            estado: estado.rows[0]?.estado || null
+            estado: estado.rows[0]?.estado || null,
+            numero: estado.rows[0]?.numero ?? null
         });
 
     } catch (error) {

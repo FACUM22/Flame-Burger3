@@ -3,71 +3,69 @@ const API_PAGOS = "/api/pagos/crear";
 const API_CONFIGURACION = "/api/configuracion";
 
 // =====================================================
-// WHATSAPP DEL LOCAL
-// Número del WhatsApp de Flame Burger, solo dígitos y con código
-// de país. Ejemplo: "59899123456". Si queda vacío, el botón abre
-// WhatsApp para que el cliente elija a quién mandar el mensaje.
+// CARTEL "PEDIDO REALIZADO CON ÉXITO"
+// Muestra el número de pedido y los datos del cliente.
 // =====================================================
-
-const WHATSAPP_LOCAL = "";
 
 const NOMBRES_PAGO = {
     efectivo: "Efectivo",
     tarjeta_pos: "Tarjeta (POS al recibir)",
-    mercado_pago: "Mercado Pago"
+    mercado_pago: "Mercado Pago (pagado)"
 };
 
-function armarTextoWhatsApp(resultado, datos) {
-
-    const numero = resultado.numero ?? resultado.id;
-
-    const lineas = [
-        `Hola! Hice el pedido *#${numero}* en Flame Burger 🔥`,
-        "",
-        `Nombre: ${datos.nombre}`,
-        `Teléfono: ${datos.telefono}`,
-        ""
-    ];
-
-    datos.productos.forEach((p) => {
-        lineas.push(`• ${p.cantidad}x ${p.nombre}`);
-    });
-
-    lineas.push("");
-
-    if (datos.entrega === "delivery") {
-        lineas.push(`Entrega: Delivery a ${datos.direccion}`);
-        lineas.push(
-            Number(resultado.costo_envio) > 0
-                ? `Envío: $${resultado.costo_envio}`
-                : "Envío: gratis"
-        );
-    } else {
-        lineas.push("Entrega: Retiro en el local");
-    }
-
-    lineas.push(`Total: $${Number(resultado.total).toFixed(2)}`);
-    lineas.push(`Pago: ${NOMBRES_PAGO[datos.pago] || datos.pago}`);
-
-    if (datos.comentarios) {
-        lineas.push(`Comentarios: ${datos.comentarios}`);
-    }
-
-    return lineas.join("\n");
-}
-
-// Cartel "Pedido realizado con éxito" + botón que abre WhatsApp
-// con el mensaje ya armado.
 function mostrarCartelPedido(resultado, datos) {
 
     const numero = resultado.numero ?? resultado.id;
 
-    const texto = armarTextoWhatsApp(resultado, datos);
+    const esDelivery = datos.entrega === "delivery";
 
-    const destino = String(WHATSAPP_LOCAL || "").replace(/\D/g, "");
+    const filasResumen = [
+        ["Nombre", datos.nombre],
+        ["Teléfono", datos.telefono],
+        [
+            "Entrega",
+            esDelivery
+                ? `Delivery a ${datos.direccion}`
+                : "Retiro en el local"
+        ]
+    ];
 
-    const enlace =
-        `https://wa.me/${destino}?text=${encodeURIComponent(texto)}`;
+    if (esDelivery) {
+        filasResumen.push([
+            "Envío",
+            Number(resultado.costo_envio) > 0
+                ? `$${resultado.costo_envio}`
+                : "Gratis"
+        ]);
+    }
+
+    filasResumen.push(
+        ["Total", `$${Number(resultado.total).toFixed(2)}`],
+        ["Pago", NOMBRES_PAGO[datos.pago] || datos.pago]
+    );
+
+    if (datos.comentarios) {
+        filasResumen.push(["Comentarios", datos.comentarios]);
+    }
+
+    const resumenHTML = `
+        <ul class="cartel-pedido-productos">
+            ${datos.productos
+                .map(
+                    (p) =>
+                        `<li>${escaparHTML(String(p.cantidad))}x ${escaparHTML(String(p.nombre))}</li>`
+                )
+                .join("")}
+        </ul>
+        <dl class="cartel-pedido-datos">
+            ${filasResumen
+                .map(
+                    ([k, v]) =>
+                        `<dt>${escaparHTML(k)}</dt><dd>${escaparHTML(String(v))}</dd>`
+                )
+                .join("")}
+        </dl>
+    `;
 
     const overlay = document.createElement("div");
 
@@ -80,90 +78,14 @@ function mostrarCartelPedido(resultado, datos) {
             <p class="cartel-pedido-numero">
                 Número de pedido: <strong>#${escaparHTML(String(numero))}</strong>
             </p>
-            <p class="cartel-pedido-texto">
-                Tocá <strong>Confirmar pedido</strong> y se abre WhatsApp
-                con tus datos. Solo tenés que apretar enviar.
-            </p>
-            <a class="cartel-pedido-boton"
-               href="${enlace}"
-               target="_blank"
-               rel="noopener">
-                Confirmar pedido
-            </a>
-            <div class="cartel-pedido-email">
-                <p class="cartel-pedido-texto">
-                    ¿Querés recibir la confirmación por email?
-                </p>
-                <input
-                    type="email"
-                    class="cartel-pedido-email-input"
-                    placeholder="tuemail@ejemplo.com"
-                    autocomplete="email"
-                >
-                <button type="button" class="cartel-pedido-email-boton">
-                    Enviar por email
-                </button>
-                <p class="cartel-pedido-email-estado" aria-live="polite"></p>
+            <div class="cartel-pedido-resumen">
+                ${resumenHTML}
             </div>
-            <a class="cartel-pedido-volver" href="/">Volver al menú</a>
+            <a class="cartel-pedido-boton" href="/">Volver al menú</a>
         </div>
     `;
 
     document.body.appendChild(overlay);
-
-    const boton = overlay.querySelector(".cartel-pedido-boton");
-
-    boton.addEventListener("click", () => {
-        boton.textContent = "Abriendo WhatsApp…";
-    });
-
-    // ---- Confirmación por email ----
-    const emailInput = overlay.querySelector(".cartel-pedido-email-input");
-    const emailBoton = overlay.querySelector(".cartel-pedido-email-boton");
-    const emailEstado = overlay.querySelector(".cartel-pedido-email-estado");
-
-    emailBoton.addEventListener("click", async () => {
-
-        const email = emailInput.value.trim();
-
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            emailEstado.textContent = "Ingresá un email válido.";
-            emailEstado.className = "cartel-pedido-email-estado error";
-            emailInput.focus();
-            return;
-        }
-
-        emailBoton.disabled = true;
-        emailBoton.textContent = "Enviando…";
-        emailEstado.textContent = "";
-
-        try {
-
-            const r = await fetch(`/api/pedidos/${resultado.id}/email`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, telefono: datos.telefono })
-            });
-
-            const data = await r.json().catch(() => ({}));
-
-            if (!r.ok) {
-                throw new Error(data.error || "No se pudo enviar el email.");
-            }
-
-            emailInput.disabled = true;
-            emailBoton.textContent = "Email enviado ✓";
-            emailEstado.textContent = "Revisá tu bandeja de entrada (y el spam).";
-            emailEstado.className = "cartel-pedido-email-estado ok";
-
-        } catch (error) {
-
-            emailBoton.disabled = false;
-            emailBoton.textContent = "Enviar por email";
-            emailEstado.textContent = error.message;
-            emailEstado.className = "cartel-pedido-email-estado error";
-        }
-    });
 }
 
 const carrito = JSON.parse(localStorage.getItem("flameCarrito")) || [];
@@ -1159,6 +1081,28 @@ async function confirmarPedido() {
 
         if (pago === "mercado_pago") {
 
+            // Se guardan los datos para mostrar el cartel al volver del pago
+            try {
+                localStorage.setItem(
+                    "flameDatosMP",
+                    JSON.stringify({
+                        resultado,
+                        datos: {
+                            nombre,
+                            telefono,
+                            direccion,
+                            comentarios,
+                            entrega,
+                            pago,
+                            productos: carrito.map((p) => ({
+                                nombre: p.nombre,
+                                cantidad: Number(p.cantidad)
+                            }))
+                        }
+                    })
+                );
+            } catch (e) {}
+
             mostrarMensaje(
                 "Generando pago con Mercado Pago...",
                 "success"
@@ -1382,7 +1326,40 @@ if (confirmarPedidoBtn) {
 // RESULTADO MERCADO PAGO
 // =====================================================
 
-function procesarResultadoMercadoPago() {
+// Cartel de pedido realizado al volver de Mercado Pago (pago aprobado)
+function mostrarCartelMercadoPago(pedidoId, confirmacion) {
+
+    try {
+
+        const guardado = JSON.parse(
+            localStorage.getItem("flameDatosMP") || "null"
+        );
+
+        if (
+            !guardado ||
+            !guardado.resultado ||
+            String(guardado.resultado.id) !== String(pedidoId)
+        ) {
+            return;
+        }
+
+        const numero = confirmacion && confirmacion.numero;
+
+        if (!numero) return;
+
+        // Se borran los datos guardados para no dejarlos en el navegador
+        localStorage.removeItem("flameDatosMP");
+        localStorage.removeItem("flamePedidoActual");
+
+        mostrarCartelPedido(
+            { ...guardado.resultado, numero },
+            guardado.datos
+        );
+
+    } catch (e) {}
+}
+
+async function procesarResultadoMercadoPago() {
 
     const parametros =
         new URLSearchParams(
@@ -1402,15 +1379,26 @@ function procesarResultadoMercadoPago() {
     const pedidoRetorno = parametros.get("external_reference");
     const pagoRetorno = parametros.get("payment_id");
 
+    let confirmacion = null;
+
     if (pedidoRetorno && estado !== "failure") {
-        fetch("/api/pagos/confirmar", {
+
+        const verificacion = fetch("/api/pagos/confirmar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 pedidoId: pedidoRetorno,
                 paymentId: pagoRetorno
             })
-        }).catch(() => {});
+        })
+            .then((r) => r.json())
+            .catch(() => null);
+
+        // Si el pago fue aprobado se espera la verificación para
+        // conocer el número de pedido; en los demás casos no.
+        if (estado === "success") {
+            confirmacion = await verificacion;
+        }
     }
 
 
@@ -1428,6 +1416,8 @@ function procesarResultadoMercadoPago() {
         localStorage.removeItem(
             "flameCarrito"
         );
+
+        mostrarCartelMercadoPago(pedidoRetorno, confirmacion);
 
         return;
     }

@@ -6,8 +6,6 @@ const pool = require("../database");
 
 const { calcularDistanciaKm } = require("../utils/distancia");
 
-const { enviarConfirmacionEmail } = require("../utils/email");
-
 // =====================================================
 // ESTADOS PERMITIDOS
 // =====================================================
@@ -712,87 +710,6 @@ try {
 
 
 });
-
-// =====================================================
-// ENVIAR CONFIRMACIÓN POR EMAIL
-// POST /api/pedidos/:id/email
-//
-// Lo usa el cartel "Pedido realizado con éxito". Para evitar que
-// alguien pida correos de pedidos ajenos, exige que:
-//   - el teléfono coincida con el del cliente del pedido,
-//   - el pedido sea confirmado y de los últimos 30 minutos,
-//   - no se haya mandado ya un email para ese pedido.
-// =====================================================
-
-router.post("/:id/email", async (req, res) => {
-
-    const pedidoId = Number(req.params.id);
-
-    const telefono = String(req.body?.telefono || "").trim();
-
-    const email = String(req.body?.email || "").trim();
-
-    if (!Number.isInteger(pedidoId) || pedidoId <= 0) {
-        return res.status(400).json({ error: "Pedido inválido." });
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
-        return res.status(400).json({ error: "Ingresá un email válido." });
-    }
-
-    try {
-
-        // Reserva el envío: solo una vez por pedido y solo si coincide
-        // el teléfono. Si algo falla más abajo, se libera.
-        const reserva = await pool.query(
-            `
-            UPDATE pedidos p
-            SET email_enviado = TRUE
-            FROM clientes c
-            WHERE p.id = $1
-              AND c.id = p.cliente_id
-              AND c.telefono = $2
-              AND p.numero IS NOT NULL
-              AND p.estado <> 'en_proceso_pago'
-              AND p.email_enviado = FALSE
-              AND p.creado_en > NOW() - INTERVAL '30 minutes'
-            RETURNING p.id
-            `,
-            [pedidoId, telefono]
-        );
-
-        if (reserva.rowCount === 0) {
-            return res.status(409).json({
-                error: "No se pudo enviar el email para este pedido."
-            });
-        }
-
-        const enviado = await enviarConfirmacionEmail(pedidoId, email);
-
-        if (!enviado) {
-
-            await pool.query(
-                "UPDATE pedidos SET email_enviado = FALSE WHERE id = $1",
-                [pedidoId]
-            );
-
-            return res.status(503).json({
-                error: "No pudimos enviar el email ahora. Probá de nuevo más tarde."
-            });
-        }
-
-        return res.json({ ok: true });
-
-    } catch (error) {
-
-        console.error("Error al enviar email del pedido:", error);
-
-        return res.status(500).json({
-            error: "Error al enviar el email."
-        });
-    }
-});
-
 
 // =====================================================
 // OBTENER PEDIDO POR ID
