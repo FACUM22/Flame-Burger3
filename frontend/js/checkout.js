@@ -6,7 +6,7 @@ const API_CONFIGURACION = "/api/configuracion";
 // (ej: "59899123456"). Si se deja vacío, el botón de la pantalla de
 // confirmación le abre al cliente un chat consigo mismo con el resumen
 // del pedido, para que lo conserve en su WhatsApp.
-const WHATSAPP_LOCAL = "";
+const WHATSAPP_LOCAL = "59897429917";
 
 // =====================================================
 // CARTEL "PEDIDO REALIZADO CON ÉXITO"
