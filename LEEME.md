@@ -126,3 +126,53 @@ El servidor va a correr en el puerto de `PORT` (por defecto
   `configuracion` de Supabase (por ahora no hay un mapa para
   reubicarlo desde el panel, solo se editan las reglas de
   envío).
+
+
+---
+
+## 5. Confirmación del pedido al cliente
+
+Cuando un pedido queda confirmado, el cliente recibe:
+
+- **Email automático** (si dejó su email en el checkout, que es opcional).
+  Se envía con [Resend](https://resend.com):
+  - Pedidos en efectivo / tarjeta al recibir: al crearse el pedido.
+  - Pedidos con Mercado Pago: cuando se aprueba el pago (una sola vez,
+    aunque lleguen el webhook y el retorno juntos).
+  - Si el email falla, el pedido igual se registra normalmente.
+- **Botón de WhatsApp** en la pantalla "¡Tu pedido se realizó con éxito!",
+  con el resumen ya escrito.
+
+### Configuración del email
+
+1. Creá una cuenta en https://resend.com y generá una API key.
+2. Agregá al `server/.env`:
+
+```
+RESEND_API_KEY=re_xxxxxxxxxxxx
+MAIL_FROM=Flame Burger <pedidos@tudominio.com>
+LOCAL_TELEFONO=099123456
+```
+
+   `LOCAL_TELEFONO` es opcional (aparece en el mail como contacto).
+3. Para enviar a cualquier cliente tenés que **verificar un dominio** en
+   Resend (Domains). Sin dominio solo podés probar con
+   `MAIL_FROM=Flame Burger <onboarding@resend.dev>`, y Resend entrega
+   únicamente a tu propio email.
+4. Reiniciá el servidor. La columna `clientes.email` se crea sola al
+   arrancar (también quedó agregada en `server/sql/schema.sql`).
+
+Sin `RESEND_API_KEY` el sistema funciona igual, simplemente no envía mails.
+
+### Configuración del botón de WhatsApp
+
+En `frontend/js/checkout.js`, arriba de todo, está la constante
+`WHATSAPP_LOCAL`:
+
+- **Vacía** (por defecto): el botón abre un chat del cliente consigo mismo
+  con el resumen, para que lo guarde en su WhatsApp.
+- **Con el número del local** (ej: `"59899123456"`, formato internacional
+  sin `+`): el botón le arma al cliente el mensaje para que te lo envíe a vos.
+
+El mensaje lo envía el cliente tocando el botón; WhatsApp no permite
+envíos automáticos sin su API de pago (WhatsApp Business API).

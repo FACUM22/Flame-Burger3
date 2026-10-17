@@ -6,6 +6,8 @@ const pool = require("../database");
 
 const { calcularDistanciaKm } = require("../utils/distancia");
 
+const { enviarConfirmacionEmail } = require("../utils/notificaciones");
+
 // =====================================================
 // ESTADOS PERMITIDOS
 // =====================================================
@@ -59,6 +61,22 @@ try {
     if (!cliente.telefono) {
         return res.status(400).json({
             error: "El teléfono es obligatorio."
+        });
+    }
+
+    // Email: opcional, pero si lo escribe tiene que ser válido
+    const emailCliente =
+        String(cliente.email || "").trim().toLowerCase();
+
+    if (
+        emailCliente &&
+        (
+            emailCliente.length > 254 ||
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailCliente)
+        )
+    ) {
+        return res.status(400).json({
+            error: "El email no es válido."
         });
     }
 
@@ -239,13 +257,15 @@ try {
             UPDATE clientes
             SET
                 nombre = $1,
-                direccion = $2
+                direccion = $2,
+                email = CASE WHEN $4 <> '' THEN $4 ELSE email END
             WHERE id = $3
             `,
             [
                 cliente.nombre,
                 cliente.direccion || "",
-                clienteId
+                clienteId,
+                emailCliente
             ]
         );
 
@@ -265,20 +285,23 @@ try {
                 (
                     nombre,
                     telefono,
-                    direccion
+                    direccion,
+                    email
                 )
                 VALUES
                 (
                     $1,
                     $2,
-                    $3
+                    $3,
+                    $4
                 )
                 RETURNING id
                 `,
                 [
                     cliente.nombre,
                     cliente.telefono,
-                    cliente.direccion || ""
+                    cliente.direccion || "",
+                    emailCliente
                 ]
             );
 
@@ -556,6 +579,17 @@ try {
 
     await client.query("COMMIT");
 
+    // =================================================
+    // EMAIL DE CONFIRMACIÓN
+    // Solo si el pedido ya quedó confirmado (efectivo / tarjeta POS).
+    // Los de Mercado Pago lo reciben cuando se aprueba el pago
+    // (ver marcarPedidoPagado en routes/pagos.js).
+    // No se espera la respuesta: si falla, el pedido no se afecta.
+    // =================================================
+
+    if (estadoInicial === "nuevo") {
+        enviarConfirmacionEmail(pedido.id);
+    }
 
     // =================================================
     // RESPUESTA

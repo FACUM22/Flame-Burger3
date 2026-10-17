@@ -2,6 +2,12 @@ const API_PEDIDOS = "/api/pedidos";
 const API_PAGOS = "/api/pagos/crear";
 const API_CONFIGURACION = "/api/configuracion";
 
+// Número de WhatsApp del local, en formato internacional sin "+"
+// (ej: "59899123456"). Si se deja vacío, el botón de la pantalla de
+// confirmación le abre al cliente un chat consigo mismo con el resumen
+// del pedido, para que lo conserve en su WhatsApp.
+const WHATSAPP_LOCAL = "";
+
 // =====================================================
 // CARTEL "PEDIDO REALIZADO CON ÉXITO"
 // Muestra el número de pedido y los datos del cliente.
@@ -67,6 +73,43 @@ function mostrarCartelPedido(resultado, datos) {
         </dl>
     `;
 
+    // ---- Resumen para WhatsApp ----
+    const lineasWA = [
+        `🔥 *Flame Burger* - Pedido #${numero}`,
+        "",
+        ...datos.productos.map((p) => `• ${p.cantidad}x ${p.nombre}`),
+        "",
+        esDelivery
+            ? `Entrega: Delivery a ${datos.direccion}`
+            : "Entrega: Retiro en el local"
+    ];
+
+    if (esDelivery) {
+        lineasWA.push(
+            `Envío: ${Number(resultado.costo_envio) > 0 ? "$" + resultado.costo_envio : "Gratis"}`
+        );
+    }
+
+    lineasWA.push(
+        `Total: $${Number(resultado.total).toFixed(2)}`,
+        `Pago: ${NOMBRES_PAGO[datos.pago] || datos.pago}`
+    );
+
+    if (datos.comentarios) {
+        lineasWA.push(`Comentarios: ${datos.comentarios}`);
+    }
+
+    const destinoWA = WHATSAPP_LOCAL
+        ? WHATSAPP_LOCAL
+        : "598" + String(datos.telefono || "").replace(/\D/g, "").replace(/^0/, "");
+
+    const enlaceWA =
+        `https://wa.me/${destinoWA}?text=${encodeURIComponent(lineasWA.join("\n"))}`;
+
+    const textoBotonWA = WHATSAPP_LOCAL
+        ? "Enviar mi pedido al local por WhatsApp"
+        : "Guardar mi resumen en WhatsApp";
+
     const overlay = document.createElement("div");
 
     overlay.className = "cartel-pedido-overlay";
@@ -81,6 +124,8 @@ function mostrarCartelPedido(resultado, datos) {
             <div class="cartel-pedido-resumen">
                 ${resumenHTML}
             </div>
+            <a class="cartel-pedido-boton cartel-pedido-boton-wa" href="${enlaceWA}" target="_blank" rel="noopener">💬 ${textoBotonWA}</a>
+            ${datos.email ? `<p class="cartel-pedido-email">📧 Te enviamos la confirmación a <strong>${escaparHTML(datos.email)}</strong></p>` : ""}
             <a class="cartel-pedido-boton" href="/">Volver al menú</a>
         </div>
     `;
@@ -140,6 +185,7 @@ function calcularDistanciaKm(lat1, lng1, lat2, lng2) {
 
 const nombreInput = document.getElementById("nombre");
 const telefonoInput = document.getElementById("telefono");
+const emailInput = document.getElementById("email");
 const direccionInput = document.getElementById("direccion");
 const comentariosInput = document.getElementById("comentarios");
 
@@ -817,6 +863,28 @@ function validarFormulario() {
 
 
     // =================================================
+    // EMAIL (opcional)
+    // =================================================
+
+    const email =
+        emailInput?.value.trim() || "";
+
+    if (
+        email &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    ) {
+
+        mostrarMensaje(
+            "El email no parece válido. Revisalo o dejalo vacío."
+        );
+
+        emailInput?.focus();
+
+        return false;
+    }
+
+
+    // =================================================
     // ENTREGA
     // =================================================
 
@@ -955,6 +1023,11 @@ async function confirmarPedido() {
         const telefono =
             telefonoInput.value.trim();
 
+        const email =
+            emailInput
+                ? emailInput.value.trim()
+                : "";
+
         const direccion =
             direccionInput.value.trim();
 
@@ -981,6 +1054,8 @@ async function confirmarPedido() {
                 nombre,
 
                 telefono,
+
+                email,
 
                 direccion,
 
@@ -1090,6 +1165,7 @@ async function confirmarPedido() {
                         datos: {
                             nombre,
                             telefono,
+                            email,
                             direccion,
                             comentarios,
                             entrega,
@@ -1219,6 +1295,7 @@ async function confirmarPedido() {
             mostrarCartelPedido(resultado, {
                 nombre,
                 telefono,
+                email,
                 direccion,
                 comentarios,
                 entrega,
@@ -1266,6 +1343,7 @@ async function confirmarPedido() {
             mostrarCartelPedido(resultado, {
                 nombre,
                 telefono,
+                email,
                 direccion,
                 comentarios,
                 entrega,

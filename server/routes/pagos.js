@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const pool = require("../database");
+const { enviarConfirmacionEmail } = require("../utils/notificaciones");
 
 
 // =====================================================
@@ -621,10 +622,14 @@ async function marcarPedidoPagado(pedidoId) {
         );
 
         await client.query("COMMIT");
-
         console.log(
             `✅ Pedido #${numero} (id ${pedidoId}) confirmado por Mercado Pago.`
         );
+
+        // Email de confirmación (no bloquea ni rompe la confirmación).
+        // Este bloque corre una sola vez por pedido, así que no se duplica
+        // aunque lleguen el webhook y el retorno a la vez.
+        enviarConfirmacionEmail(pedidoId);
 
         return true;
 

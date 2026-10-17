@@ -49,7 +49,8 @@ CREATE TABLE clientes (
     id SERIAL PRIMARY KEY,
     nombre TEXT NOT NULL,
     telefono TEXT NOT NULL UNIQUE,
-    direccion TEXT DEFAULT ''
+    direccion TEXT DEFAULT '',
+    email TEXT DEFAULT ''
 );
 
 -- =====================================================
