@@ -130,49 +130,36 @@ El servidor va a correr en el puerto de `PORT` (por defecto
 
 ---
 
-## 5. Confirmación del pedido al cliente
+## 5. Botón de WhatsApp en la confirmación del pedido
 
-Cuando un pedido queda confirmado, el cliente recibe:
+Al terminar el pedido, la pantalla "¡Tu pedido se realizó con éxito!"
+muestra un botón de WhatsApp. Al tocarlo se abre WhatsApp con un chat
+hacia el local y el resumen del pedido ya escrito (número de pedido,
+productos, entrega, envío, total y forma de pago); el cliente solo tiene
+que tocar "enviar".
 
-- **Email automático** (si dejó su email en el checkout, que es opcional).
-  Se envía con [Resend](https://resend.com):
-  - Pedidos en efectivo / tarjeta al recibir: al crearse el pedido.
-  - Pedidos con Mercado Pago: cuando se aprueba el pago (una sola vez,
-    aunque lleguen el webhook y el retorno juntos).
-  - Si el email falla, el pedido igual se registra normalmente.
-- **Botón de WhatsApp** en la pantalla "¡Tu pedido se realizó con éxito!",
-  con el resumen ya escrito.
+- El número del local se configura en `frontend/js/checkout.js`, en la
+  constante `WHATSAPP_LOCAL` (formato internacional sin "+", por ejemplo
+  `"59897429917"`).
+- Si se deja vacía, el botón abre un chat del cliente consigo mismo para
+  que guarde el resumen.
+- El mensaje lo envía el cliente al tocar el botón. WhatsApp no permite
+  envíos automáticos sin su API de pago (WhatsApp Business API).
 
-### Configuración del email
 
-1. Creá una cuenta en https://resend.com y generá una API key.
-2. Agregá al `server/.env`:
+---
 
-```
-RESEND_API_KEY=re_xxxxxxxxxxxx
-MAIL_FROM=Flame Burger <pedidos@tudominio.com>
-LOCAL_TELEFONO=099123456
-```
+## 6. Comprobante del pedido en PDF
 
-   `LOCAL_TELEFONO` es opcional (aparece en el mail como contacto).
-3. Para enviar a cualquier cliente tenés que **verificar un dominio** en
-   Resend (Domains). Sin dominio solo podés probar con
-   `MAIL_FROM=Flame Burger <onboarding@resend.dev>`, y Resend entrega
-   únicamente a tu propio email.
-4. Reiniciá el servidor. La columna `clientes.email` se crea sola al
-   arrancar (también quedó agregada en `server/sql/schema.sql`).
+La pantalla "¡Tu pedido se realizó con éxito!" también tiene un botón
+"Descargar comprobante (PDF)". El PDF incluye: número de pedido, fecha y
+hora (hora de Uruguay), datos del cliente, tipo de entrega, forma de pago,
+productos con precio y subtotal, envío y total.
 
-Sin `RESEND_API_KEY` el sistema funciona igual, simplemente no envía mails.
-
-### Configuración del botón de WhatsApp
-
-En `frontend/js/checkout.js`, arriba de todo, está la constante
-`WHATSAPP_LOCAL`:
-
-- **Vacía** (por defecto): el botón abre un chat del cliente consigo mismo
-  con el resumen, para que lo guarde en su WhatsApp.
-- **Con el número del local** (ej: `"59899123456"`, formato internacional
-  sin `+`): el botón le arma al cliente el mensaje para que te lo envíe a vos.
-
-El mensaje lo envía el cliente tocando el botón; WhatsApp no permite
-envíos automáticos sin su API de pago (WhatsApp Business API).
+- Se genera en el navegador del cliente con jsPDF, cargado desde cdnjs en
+  `frontend/checkout.html`. No requiere cambios en el servidor ni en la
+  base de datos.
+- El cliente necesita conexión a internet para que cargue la librería.
+- Los precios salen de los que tenía el carrito al confirmar. El servidor
+  sigue calculando el total real; el total del PDF es el que devolvió el
+  servidor.

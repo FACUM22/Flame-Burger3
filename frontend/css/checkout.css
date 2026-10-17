@@ -791,16 +791,22 @@ body {
 }
 
 
-/* Botón de WhatsApp y aviso de email en el cartel de confirmación */
+/* Botón de WhatsApp en el cartel de confirmación */
 .cartel-pedido-boton-wa {
     background: #25d366;
     color: #fff;
     margin-bottom: 10px;
 }
 
-.cartel-pedido-email {
-    margin: 0 0 12px;
-    font-size: 14px;
-    opacity: .85;
+/* Botón de descarga de comprobante PDF */
+.cartel-pedido-boton-pdf {
+    box-sizing: border-box;
+    width: 100%;
+    border: 2px solid #222;
+    background: #fff;
+    color: #222;
+    cursor: pointer;
+    font-family: inherit;
     text-align: center;
+    margin-bottom: 10px;
 }

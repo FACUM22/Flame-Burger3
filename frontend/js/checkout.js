@@ -3,9 +3,10 @@ const API_PAGOS = "/api/pagos/crear";
 const API_CONFIGURACION = "/api/configuracion";
 
 // Número de WhatsApp del local, en formato internacional sin "+"
-// (ej: "59899123456"). Si se deja vacío, el botón de la pantalla de
-// confirmación le abre al cliente un chat consigo mismo con el resumen
-// del pedido, para que lo conserve en su WhatsApp.
+// (ej: "59897429917"). El botón de la pantalla de confirmación le abre
+// al cliente un chat con el local con el resumen del pedido ya escrito.
+// Si se deja vacío, abre un chat del cliente consigo mismo para que
+// guarde el resumen en su WhatsApp.
 const WHATSAPP_LOCAL = "59897429917";
 
 // =====================================================
@@ -18,6 +19,205 @@ const NOMBRES_PAGO = {
     tarjeta_pos: "Tarjeta (POS al recibir)",
     mercado_pago: "Mercado Pago (pagado)"
 };
+
+// =====================================================
+// COMPROBANTE DEL PEDIDO EN PDF (se genera en el navegador, jsPDF)
+// =====================================================
+
+// jsPDF usa fuentes estándar: se quitan emojis y símbolos que no soportan
+function textoPDF(valor) {
+    return String(valor ?? "").replace(/[^\x20-\x7E\u00A0-\u00FF]/g, "").trim();
+}
+
+function descargarComprobantePDF(resultado, datos) {
+
+    const lib = window.jspdf;
+
+    if (!lib || !lib.jsPDF) {
+        alert("No se pudo generar el PDF. Revisá tu conexión e intentá de nuevo.");
+        return;
+    }
+
+    const doc = new lib.jsPDF({ unit: "mm", format: "a4" });
+
+    const numero = resultado.numero ?? resultado.id;
+    const esDelivery = datos.entrega === "delivery";
+    const margen = 18;
+    const ancho = 210 - margen * 2;
+    const derecha = 210 - margen;
+    let y = 22;
+
+    const dinero = (n) => "$" + Number(n || 0).toFixed(2);
+
+    // Salta de página si no entra lo que sigue
+    const asegurarEspacio = (alto) => {
+        if (y + alto > 280) {
+            doc.addPage();
+            y = 22;
+        }
+    };
+
+    // Escribe texto con salto de línea automático
+    const escribir = (texto, x, opciones = {}) => {
+        const lineas = doc.splitTextToSize(textoPDF(texto), opciones.ancho || ancho);
+        asegurarEspacio(lineas.length * 5.5);
+        doc.text(lineas, x, y);
+        y += lineas.length * 5.5;
+    };
+
+    const linea = () => {
+        doc.setDrawColor(200);
+        doc.line(margen, y, derecha, y);
+        y += 6;
+    };
+
+    // ---- Encabezado ----
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("Flame Burger", margen, y);
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.setTextColor(110);
+    doc.text("Comprobante de pedido", margen, y);
+    doc.setTextColor(0);
+    y += 12;
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("Pedido #" + numero, margen, y);
+
+    let fecha = new Date();
+    if (resultado.creado_en) {
+        const f = new Date(resultado.creado_en);
+        if (!isNaN(f.getTime())) fecha = f;
+    }
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text(
+        fecha.toLocaleString("es-UY", { timeZone: "America/Montevideo" }),
+        derecha,
+        y,
+        { align: "right" }
+    );
+    y += 9;
+    linea();
+
+    // ---- Datos del cliente y entrega ----
+    doc.setFontSize(11);
+
+    const filas = [
+        ["Cliente", datos.nombre],
+        ["Teléfono", datos.telefono],
+        [
+            "Entrega",
+            esDelivery
+                ? "Delivery a " + datos.direccion
+                : "Retiro en el local"
+        ],
+        ["Pago", NOMBRES_PAGO[datos.pago] || datos.pago]
+    ];
+
+    if (datos.comentarios) {
+        filas.push(["Comentarios", datos.comentarios]);
+    }
+
+    filas.forEach(([clave, valor]) => {
+        doc.setFont("helvetica", "bold");
+        asegurarEspacio(6);
+        doc.text(clave + ":", margen, y);
+        doc.setFont("helvetica", "normal");
+        const yInicio = y;
+        escribir(valor, margen + 32, { ancho: ancho - 32 });
+        if (y === yInicio) y += 5.5;
+    });
+
+    y += 2;
+    linea();
+
+    // ---- Productos ----
+    const conPrecio = datos.productos.some((p) => Number(p.precio) > 0);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    asegurarEspacio(8);
+    doc.text("Cant.", margen, y);
+    doc.text("Producto", margen + 16, y);
+    if (conPrecio) {
+        doc.text("Precio", derecha - 32, y, { align: "right" });
+        doc.text("Subtotal", derecha, y, { align: "right" });
+    }
+    y += 6;
+
+    doc.setFont("helvetica", "normal");
+
+    let subtotalProductos = 0;
+
+    datos.productos.forEach((p) => {
+
+        const cantidad = Number(p.cantidad) || 0;
+        const precio = Number(p.precio) || 0;
+        const subtotal = precio * cantidad;
+        subtotalProductos += subtotal;
+
+        const anchoNombre = conPrecio ? ancho - 16 - 58 : ancho - 16;
+        const lineasNombre = doc.splitTextToSize(textoPDF(p.nombre), anchoNombre);
+
+        asegurarEspacio(lineasNombre.length * 5.5 + 1);
+
+        doc.text(String(cantidad) + "x", margen, y);
+        doc.text(lineasNombre, margen + 16, y);
+
+        if (conPrecio) {
+            doc.text(dinero(precio), derecha - 32, y, { align: "right" });
+            doc.text(dinero(subtotal), derecha, y, { align: "right" });
+        }
+
+        y += lineasNombre.length * 5.5 + 1;
+    });
+
+    y += 1;
+    linea();
+
+    // ---- Totales ----
+    const fila = (etiqueta, valor, negrita) => {
+        asegurarEspacio(8);
+        doc.setFont("helvetica", negrita ? "bold" : "normal");
+        doc.setFontSize(negrita ? 14 : 11);
+        doc.text(etiqueta, derecha - 60, y);
+        doc.text(valor, derecha, y, { align: "right" });
+        y += negrita ? 8 : 6;
+    };
+
+    if (conPrecio) {
+        fila("Productos", dinero(subtotalProductos), false);
+    }
+
+    if (esDelivery) {
+        fila(
+            "Envío",
+            Number(resultado.costo_envio) > 0
+                ? dinero(resultado.costo_envio)
+                : "Gratis",
+            false
+        );
+    }
+
+    fila("Total", dinero(resultado.total), true);
+
+    // ---- Pie ----
+    y += 8;
+    asegurarEspacio(10);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(110);
+    doc.text("¡Gracias por tu pedido!", margen, y);
+    doc.setTextColor(0);
+
+    doc.save("Flame-Burger-pedido-" + numero + ".pdf");
+}
 
 function mostrarCartelPedido(resultado, datos) {
 
@@ -125,12 +325,25 @@ function mostrarCartelPedido(resultado, datos) {
                 ${resumenHTML}
             </div>
             <a class="cartel-pedido-boton cartel-pedido-boton-wa" href="${enlaceWA}" target="_blank" rel="noopener">💬 ${textoBotonWA}</a>
-            ${datos.email ? `<p class="cartel-pedido-email">📧 Te enviamos la confirmación a <strong>${escaparHTML(datos.email)}</strong></p>` : ""}
+            <button type="button" class="cartel-pedido-boton cartel-pedido-boton-pdf" id="descargarPdfPedido">📄 Descargar comprobante (PDF)</button>
             <a class="cartel-pedido-boton" href="/">Volver al menú</a>
         </div>
     `;
 
     document.body.appendChild(overlay);
+
+    const botonPdf = overlay.querySelector("#descargarPdfPedido");
+
+    if (botonPdf) {
+        botonPdf.addEventListener("click", () => {
+            try {
+                descargarComprobantePDF(resultado, datos);
+            } catch (error) {
+                console.error("❌ ERROR GENERANDO PDF:", error);
+                alert("No se pudo generar el PDF. Intentá de nuevo.");
+            }
+        });
+    }
 }
 
 const carrito = JSON.parse(localStorage.getItem("flameCarrito")) || [];
@@ -185,7 +398,6 @@ function calcularDistanciaKm(lat1, lng1, lat2, lng2) {
 
 const nombreInput = document.getElementById("nombre");
 const telefonoInput = document.getElementById("telefono");
-const emailInput = document.getElementById("email");
 const direccionInput = document.getElementById("direccion");
 const comentariosInput = document.getElementById("comentarios");
 
@@ -863,28 +1075,6 @@ function validarFormulario() {
 
 
     // =================================================
-    // EMAIL (opcional)
-    // =================================================
-
-    const email =
-        emailInput?.value.trim() || "";
-
-    if (
-        email &&
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    ) {
-
-        mostrarMensaje(
-            "El email no parece válido. Revisalo o dejalo vacío."
-        );
-
-        emailInput?.focus();
-
-        return false;
-    }
-
-
-    // =================================================
     // ENTREGA
     // =================================================
 
@@ -1023,11 +1213,6 @@ async function confirmarPedido() {
         const telefono =
             telefonoInput.value.trim();
 
-        const email =
-            emailInput
-                ? emailInput.value.trim()
-                : "";
-
         const direccion =
             direccionInput.value.trim();
 
@@ -1054,8 +1239,6 @@ async function confirmarPedido() {
                 nombre,
 
                 telefono,
-
-                email,
 
                 direccion,
 
@@ -1165,14 +1348,14 @@ async function confirmarPedido() {
                         datos: {
                             nombre,
                             telefono,
-                            email,
                             direccion,
                             comentarios,
                             entrega,
                             pago,
                             productos: carrito.map((p) => ({
                                 nombre: p.nombre,
-                                cantidad: Number(p.cantidad)
+                    precio: Number(p.precio) || 0,
+                    cantidad: Number(p.cantidad)
                             }))
                         }
                     })
@@ -1295,13 +1478,13 @@ async function confirmarPedido() {
             mostrarCartelPedido(resultado, {
                 nombre,
                 telefono,
-                email,
                 direccion,
                 comentarios,
                 entrega,
                 pago,
                 productos: carrito.map((p) => ({
                     nombre: p.nombre,
+                    precio: Number(p.precio) || 0,
                     cantidad: Number(p.cantidad)
                 }))
             });
@@ -1343,13 +1526,13 @@ async function confirmarPedido() {
             mostrarCartelPedido(resultado, {
                 nombre,
                 telefono,
-                email,
                 direccion,
                 comentarios,
                 entrega,
                 pago,
                 productos: carrito.map((p) => ({
                     nombre: p.nombre,
+                    precio: Number(p.precio) || 0,
                     cantidad: Number(p.cantidad)
                 }))
             });

@@ -25,12 +25,6 @@ async function migrar() {
             )
         `);
 
-        // Email opcional del cliente (para enviarle la confirmación)
-        await client.query(`
-            ALTER TABLE clientes
-            ADD COLUMN IF NOT EXISTS email TEXT DEFAULT ''
-        `);
-
         const existe = await client.query(`
             SELECT 1
             FROM information_schema.columns
